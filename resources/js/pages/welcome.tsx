@@ -1,4 +1,3 @@
-import { dashboard, login, register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import PublicHeader from '@/components/public-header';
@@ -8,19 +7,10 @@ import About from '@/components/about';
 import Gallery from '@/components/gallery';
 import { Button } from '@/components/ui/button';
 import { 
-    Users, 
-    Target, 
-    TrendingUp,
     Heart,
-    UserPlus,
-    ArrowRight,
-    CheckCircle,
-    Star,
-    ChevronLeft,
-    ChevronRight
+    UserPlus
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import TopBar from '@/components/top-bar';
 import Supporter from '@/components/supporter';
 import Footer from '@/components/footer';
 
@@ -68,14 +58,6 @@ export default function Welcome() {
 
         return () => clearInterval(interval);
     }, [isAutoPlaying, images.length]);
-
-    const nextSlide = () => {
-        setCurrentSlide((prev) => (prev + 1) % images.length);
-    };
-
-    const prevSlide = () => {
-        setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
-    };
 
     const goToSlide = (index: number) => {
         setCurrentSlide(index);
