@@ -25,7 +25,7 @@ interface NavbarProps {
 
 const navigationItems = [
     {
-        title: 'HOME',
+        title: 'Home',
         href: '/'
     },
     {
@@ -48,6 +48,13 @@ const navigationItems = [
     {
         title: 'WORKING AREAS',
         href: '/working-areas',
+        subItems: [
+            { title: 'YOUTH IN CIVIC LEADERSHIP, HUMAN RIGHTS AND DEMOCRATIZATION', href: '/working-areas/leadership' },
+            { title: 'YOUTH IN GOVERNANCE', href: '/working-areas/governance' },
+            { title: 'YOUTH IN PEACE BUILDING', href: '/working-areas/peace' },
+            { title: 'YOUTH IN ENTREPRENEURSHIP', href: '/working-areas/entrepreneurship' },
+            { title: 'YOUTH IN COMMON PLATFORM', href: '/working-areas/common-platform' },
+        ]
     },
     {
         title: 'OPPORTUNITIES',
@@ -82,7 +89,7 @@ export default function Navbar({ user }: NavbarProps) {
     };
 
     return (
-        <nav className="bg-white shadow-lg border-b-2 border-blue-600">
+        <nav className="bg-gray-100 border-2">
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-20">
                     {/* Logo and Navigation Container */}

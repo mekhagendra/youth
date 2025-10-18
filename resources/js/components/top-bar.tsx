@@ -24,8 +24,8 @@ interface TopBarProps {
 
 export default function TopBar({ user }: TopBarProps) {
     return (
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-            <div className="container mx-auto px-4">
+        <div className="bg-green-700 text-white">
+            <div className="container mx-auto px-4 top-0 left-0 right-0 z-50">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between py-2 text-sm">
                     {/* Contact Info */}
                     <div className="flex flex-wrap items-center gap-4 mb-2 md:mb-0">

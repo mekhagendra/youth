@@ -1,7 +1,11 @@
 import { dashboard, login, register } from '@/routes';
 import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import PublicHeader from '@/components/public-header';
+import Message from '@/components/message';
+import Activity from '@/components/activity';
+import About from '@/components/about';
+import Gallery from '@/components/gallery';
 import { Button } from '@/components/ui/button';
 import { 
     Users, 
@@ -16,6 +20,9 @@ import {
     ChevronRight
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import TopBar from '@/components/top-bar';
+import Supporter from '@/components/supporter';
+import Footer from '@/components/footer';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
@@ -88,7 +95,7 @@ export default function Welcome() {
             <PublicHeader user={auth.user} />
             
             {/* Main Content */}
-            <div className="pt-32 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+            <div className="pt-32 bg-gray-100 min-h-screen">
                 {/* Hero Section */}
                 <section className="container mx-auto px-4 py-20">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -190,132 +197,48 @@ export default function Welcome() {
                         </div>
                     </div>
                     <br />
-                    <Button 
-                        size="lg"
-                        variant="outline"
-                        className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-3 rounded-lg text-lg flex items-center mx-auto"
-                    >
-                        <span>Learn More</span>
-                    </Button>
+                    
                 </section>
-
-                {/* About Section */}
-                <section className="bg-white py-20">
-                    <div className="container mx-auto px-4">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                                We help in Youth's capacity development.
-                            </h2>
-                            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                                Youth Initiative (YI) is a youth organization working for the capacity 
-                                development of youths in Nepal. Established in 1999, YI was formally 
-                                registered with the District Administration Office, Kathmandu in April 2001.
-                            </p>
-                        </div>
-                        
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {/* Inform */}
-                            <div className="text-center p-8 bg-blue-50 rounded-xl hover:shadow-lg transition-shadow duration-300">
-                                <div className="h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <Users className="h-8 w-8 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-800 mb-4">Inform</h3>
-                                <p className="text-gray-600">
-                                    Inform young people about the global, national and local issues and 
-                                    concerns that affects their everyday living.
-                                </p>
-                            </div>
-                            
-                            {/* Empower */}
-                            <div className="text-center p-8 bg-green-50 rounded-xl hover:shadow-lg transition-shadow duration-300">
-                                <div className="h-16 w-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <TrendingUp className="h-8 w-8 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-800 mb-4">Empower</h3>
-                                <p className="text-gray-600">
-                                    Empower young people by organizing them into a group of critical mass, 
-                                    increasing their access and control over resources.
-                                </p>
-                            </div>
-                            
-                            {/* Involve */}
-                            <div className="text-center p-8 bg-purple-50 rounded-xl hover:shadow-lg transition-shadow duration-300">
-                                <div className="h-16 w-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <Target className="h-8 w-8 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-800 mb-4">Involve</h3>
-                                <p className="text-gray-600">
-                                    Involve young people by increasing youth representation in governance of 
-                                    all political and social institutions at national and sub national level.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <About />
 
                 {/* Journey Section */}
-                <section className="container mx-auto px-4 py-20">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                            Our Journey So Far
-                        </h2>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Since its inception in 1999, Youth Initiative has been at the forefront of 
-                            youth empowerment in Nepal. Over the years, we have successfully implemented 
-                            numerous programs and initiatives that have positively impacted the lives of 
-                            thousands of young individuals across the country.
-                        </p>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {/* Milestone 1 */}
-                        <div className="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-                            <div className="flex items-center mb-4">
-                                <div className="h-12 w-12 bg-blue-600 text-white rounded-full flex items-center justify-center mr-4">
-                                    <CheckCircle className="h-6 w-6" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-800">1999</h3>
-                            </div>
-                            <p className="text-gray-600">
-                                Founded with a mission to empower youth and foster leadership skills.
-                            </p>
+                <section className="bg-gray-100 ">
+                    <div className="container w-full mx-auto px-4 py-5">
+                        {/* Small Screen Image (Mobile/Tablet) */}
+                        <div className="block md:hidden">
+                            <img 
+                                src="/images/aboutusImage.jpg" 
+                                alt="Youth Initiative Mobile Journey" 
+                                className="w-full h-auto"
+                            />
                         </div>
                         
-                        {/* Milestone 2 */}
-                        <div className="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-                            <div className="flex items-center mb-4">
-                                <div className="h-12 w-12 bg-green-600 text-white rounded-full flex items-center justify-center mr-4">
-                                    <Star className="h-6 w-6" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-800">2005</h3>
-                            </div>
-                            <p className="text-gray-600">
-                                Launched the first nationwide youth leadership program, reaching over 5,000 youths.
-                            </p>
-                        </div>
-                        
-                        {/* Milestone 3 */}
-                        <div className="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-                            <div className="flex items-center mb-4">
-                                <div className="h-12 w-12 bg-purple-600 text-white rounded-full flex items-center justify-center mr-4">
-                                    <Users className="h-6 w-6" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-800">2020</h3>
-                            </div>
-                            <p className="text-gray-600">
-                                Expanded programs to include digital literacy and mental health awareness.
-                            </p>
+                        {/* Medium+ Screen Image (Desktop) */}
+                        <div className="hidden md:block">
+                            <img 
+                                src="/images/backgroundImage.jpg" 
+                                alt="Youth Initiative Desktop Journey" 
+                                className="w-full h-auto"
+                            />
                         </div>
                     </div>
                 </section>
 
+                <Message />
+
+                <Gallery showCount={6} showViewAll={true} />
+
+                <Activity showCount={4} showViewAll={true} />
+
+                <Supporter />
+
                 {/* CTA Section */}
-                <section className="bg-gradient-to-r from-blue-600 to-indigo-700 py-20">
+                <section className="bg-gray-50 py-20">
                     <div className="container mx-auto px-4 text-center">
-                        <h2 className="text-4xl font-bold text-white mb-6">
+                        <h2 className="text-4xl font-bold text-green-700 mb-6">
                             Make a Difference, Support Those in Need.
                         </h2>
-                        <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                        <p className="text-xl text-black font-bold mb-8 max-w-3xl mx-auto">
                             Be part of a movement that empowers young voices, drives social change, and 
                             shapes a better future for all. Whether you're passionate about advocacy, 
                             community service, or leadership—your time and energy can create real impact.
@@ -323,7 +246,7 @@ export default function Welcome() {
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button 
                                 size="lg"
-                                className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg text-lg flex items-center space-x-2"
+                                className="bg-green-600 text-white hover:bg-green-700 px-8 py-3 rounded-lg text-lg flex items-center space-x-2"
                             >
                                 <UserPlus className="h-5 w-5" />
                                 <span>Join as Member</span>
@@ -331,7 +254,7 @@ export default function Welcome() {
                             <Button 
                                 size="lg"
                                 variant="outline"
-                                className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg flex items-center space-x-2"
+                                className="bg-green-600 text-white hover:bg-green-700 px-8 py-3 rounded-lg text-lg flex items-center space-x-2"
                             >
                                 <Heart className="h-5 w-5" />
                                 <span>Join as Volunteer</span>
@@ -339,6 +262,7 @@ export default function Welcome() {
                         </div>
                     </div>
                 </section>
+                <Footer />
             </div>
         </>
     );
