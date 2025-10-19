@@ -105,7 +105,7 @@ export default function Gallery({ showCount = 6, showViewAll = true, className =
                     </div>
 
                     {/* Gallery Grid - Single Row of 6 */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-12">
+                    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-12">
                         {displayImages.map((image) => (
                             <div 
                                 key={image.id}
@@ -119,18 +119,18 @@ export default function Gallery({ showCount = 6, showViewAll = true, className =
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
                                 
-                                {/* Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+                                {/* Gradient Overlay - Only visible on hover */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-300" />
 
-                                {/* View Icon */}
+                                {/* View Icon - Only visible on hover */}
                                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110">
                                     <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
                                         <Eye className="h-5 w-5 text-white" />
                                     </div>
                                 </div>
                                 
-                                {/* Content */}
-                                <div className="absolute bottom-0 left-0 right-0 p-3 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                {/* Content - Only visible on hover */}
+                                <div className="absolute bottom-0 left-0 right-0 p-3 text-white opacity-0 group-hover:opacity-100 transform translate-y-full group-hover:translate-y-0 transition-all duration-300">
                                     <h3 className="text-sm font-bold text-center line-clamp-2">
                                         {image.name}
                                     </h3>

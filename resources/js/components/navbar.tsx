@@ -19,7 +19,7 @@ interface NavbarProps {
 
 const navigationItems = [
     {
-        title: 'Home',
+        title: 'HOME',
         href: '/'
     },
     {
@@ -88,18 +88,22 @@ const Navbar: React.FC<NavbarProps> = () => {
                 <div className="flex justify-between items-center py-4">
                     {/* Logo */}
                     <Link href="/" className="text-2xl font-bold text-blue-600">
-                        Youth Initiative
+                        <img
+                            src="/images/youthlogo.png"
+                            alt="Youth Initiative Logo"
+                            className="h-12 w-auto xs:h-12 sm:h-12 md:h-12 lg:h-14 xl:h-16 transition-all duration-200 hover:scale-105"
+                        />
                     </Link>
 
                     {/* Navigation Links */}
-                    <div className="hidden md:flex space-x-8">
+                    <div className="hidden md:flex space-x-4">
                         {navigationItems.map((item) => (
                             <div key={item.title} className="relative group">
                                 {item.subItems ? (
                                     <div className="relative">
                                         <Button
                                             variant="ghost"
-                                            className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-1"
+                                            className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-1 text-sm"
                                             onClick={() => handleDropdownToggle(item.title)}
                                         >
                                             <span className="font-medium">{item.title}</span>
@@ -117,7 +121,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                                                 <Link
                                                     key={subItem.title}
                                                     href={subItem.href}
-                                                    className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                                                    className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 text-sm"
                                                 >
                                                     {subItem.title}
                                                 </Link>
@@ -127,7 +131,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-1 font-medium"
+                                        className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-1 font-medium text-sm"
                                     >
                                         <span>{item.title}</span>
                                     </Link>
@@ -165,7 +169,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                                     <div>
                                         <Button
                                             variant="ghost"
-                                            className="w-full justify-between text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-lg"
+                                            className="w-full justify-between text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-lg text-sm"
                                             onClick={() => handleDropdownToggle(item.title)}
                                         >
                                             <div className="flex items-center space-x-2">
@@ -183,7 +187,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                                                     <Link
                                                         key={subItem.title}
                                                         href={subItem.href}
-                                                        className="block px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                                                        className="block px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 text-sm"
                                                         onClick={() => setIsMobileMenuOpen(false)}
                                                     >
                                                         {subItem.title}
@@ -195,7 +199,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-lg transition-all duration-200 font-medium"
+                                        className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-lg transition-all duration-200 font-medium text-sm"
                                         onClick={() => setIsMobileMenuOpen(false)}
                                     >
                                         <span>{item.title}</span>
