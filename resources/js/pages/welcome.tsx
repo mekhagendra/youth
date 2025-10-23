@@ -14,8 +14,44 @@ import { useState, useEffect } from 'react';
 import Supporter from '@/components/supporter';
 import Footer from '@/components/footer';
 
+interface GalleryImage {
+    id: number;
+    title: string;
+    description: string | null;
+    image_path: string;
+    alt_text: string | null;
+    sort_order: number;
+    is_active: boolean;
+    category: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+interface Activity {
+    id: number;
+    title: string;
+    description: string;
+    content: string | null;
+    image_path: string | null;
+    location: string;
+    date: string;
+    category: 'workshop' | 'seminar' | 'training' | 'community' | 'awareness';
+    participants: number | null;
+    organizer: string;
+    status: 'upcoming' | 'ongoing' | 'completed';
+    is_active: boolean;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+}
+
+interface WelcomeProps extends SharedData {
+    galleryImages: GalleryImage[];
+    activities: Activity[];
+}
+
 export default function Welcome() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, galleryImages, activities } = usePage<WelcomeProps>().props;
     
     // Carousel state and logic
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -208,9 +244,9 @@ export default function Welcome() {
 
                 <Message />
 
-                <Gallery showCount={6} showViewAll={true} />
+                <Gallery images={galleryImages} showCount={6} showViewAll={true} />
 
-                <Activity showCount={4} showViewAll={true} />
+                <Activity activities={activities} showCount={4} showViewAll={true} />
 
                 <Supporter />
 

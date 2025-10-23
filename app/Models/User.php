@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -48,5 +49,21 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the content created by the user.
+     */
+    public function contents()
+    {
+        return $this->hasMany(Content::class);
+    }
+
+    /**
+     * Check if user is admin.
+     */
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }

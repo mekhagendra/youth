@@ -4,63 +4,27 @@ import { Link } from '@inertiajs/react';
 
 interface GalleryImage {
     id: number;
-    name: string;
-    src: string;
+    title: string;
+    description: string | null;
+    image_path: string;
+    alt_text: string | null;
+    sort_order: number;
+    is_active: boolean;
+    category: string | null;
+    created_at: string;
+    updated_at: string;
 }
 
 interface GalleryProps {
+    images?: GalleryImage[];
     showCount?: number;
     showViewAll?: boolean;
     className?: string;
 }
 
-export default function Gallery({ showCount = 6, showViewAll = true, className = "" }: GalleryProps) {
+export default function Gallery({ images = [], showCount = 6, showViewAll = true, className = "" }: GalleryProps) {
     const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-    // Sample gallery data - this would normally come from API/database
-    const [images] = useState<GalleryImage[]>([
-        {
-            id: 1,
-            name: "Youth Leadership Summit 2025",
-            src: "/images/aboutusImage.jpg"
-        },
-        {
-            id: 2,
-            name: "Digital Skills Training Workshop",
-            src: "/images/backgroundImage.jpg"
-        },
-        {
-            id: 3,
-            name: "Community Health Awareness Campaign",
-            src: "/images/aboutOurOrgImage.jpg"
-        },
-        {
-            id: 4,
-            name: "Environmental Conservation Project",
-            src: "/images/aboutOurOrgImage1.jpg"
-        },
-        {
-            id: 5,
-            name: "Women Empowerment Workshop Success",
-            src: "/images/aboutusImage.jpg"
-        },
-        {
-            id: 6,
-            name: "Youth Innovation Lab Opening",
-            src: "/images/backgroundImage.jpg"
-        },
-        {
-            id: 7,
-            name: "Rural Development Initiative",
-            src: "/images/aboutOurOrgImage.jpg"
-        },
-        {
-            id: 8,
-            name: "Youth Entrepreneurship Fair",
-            src: "/images/aboutOurOrgImage1.jpg"
-        }
-    ]);
 
     // Get images to display
     const displayImages = images.slice(0, showCount);
@@ -114,8 +78,8 @@ export default function Gallery({ showCount = 6, showViewAll = true, className =
                             >
                                 {/* Image */}
                                 <img 
-                                    src={image.src} 
-                                    alt={image.name}
+                                    src={`/storage/${image.image_path}`} 
+                                    alt={image.alt_text || image.title}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
                                 
@@ -132,7 +96,7 @@ export default function Gallery({ showCount = 6, showViewAll = true, className =
                                 {/* Content - Only visible on hover */}
                                 <div className="absolute bottom-0 left-0 right-0 p-3 text-white opacity-0 group-hover:opacity-100 transform translate-y-full group-hover:translate-y-0 transition-all duration-300">
                                     <h3 className="text-sm font-bold text-center line-clamp-2">
-                                        {image.name}
+                                        {image.title}
                                     </h3>
                                 </div>
                             </div>
@@ -192,14 +156,17 @@ export default function Gallery({ showCount = 6, showViewAll = true, className =
                         onClick={(e) => e.stopPropagation()}
                     >
                         <img 
-                            src={selectedImage.src} 
-                            alt={selectedImage.name}
+                            src={`/storage/${selectedImage.image_path}`} 
+                            alt={selectedImage.alt_text || selectedImage.title}
                             className="w-full h-full object-contain rounded-lg"
                         />
                         
                         {/* Image Info */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-6 rounded-b-lg">
-                            <h3 className="text-xl font-bold text-center">{selectedImage.name}</h3>
+                            <h3 className="text-xl font-bold text-center">{selectedImage.title}</h3>
+                            {selectedImage.description && (
+                                <p className="text-sm text-center mt-2 opacity-90">{selectedImage.description}</p>
+                            )}
                         </div>
 
                         {/* Image Counter */}

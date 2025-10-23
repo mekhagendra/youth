@@ -1,126 +1,36 @@
 import { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { Calendar, MapPin, Eye, ArrowRight, Search, Filter } from 'lucide-react';
 import PublicHeader from '@/components/public-header';
+import { type SharedData } from '@/types';
 
 interface Activity {
     id: number;
     title: string;
     description: string;
-    image: string;
+    content: string | null;
+    image_path: string | null;
     location: string;
     date: string;
-    content?: string;
-    category: 'workshop' | 'seminar' | 'training' | 'community' | 'awareness';
-    participants?: number;
+    category: string;
+    participants: number | null;
     organizer: string;
-    status: 'upcoming' | 'ongoing' | 'completed';
+    status: string;
+    is_active: boolean;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+}
+
+interface ActivitiesProps extends SharedData {
+    activities: Activity[];
 }
 
 export default function Activities() {
+    const { auth, activities } = usePage<ActivitiesProps>().props;
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
-
-    // Sample activity data - this would normally come from API/database
-    const [activities] = useState<Activity[]>([
-        {
-            id: 1,
-            title: "Youth Leadership Workshop",
-            description: "Empowering young leaders with essential skills for community development and social change.",
-            image: "/images/aboutusImage.jpg",
-            location: "Kathmandu Community Center",
-            date: "2025-10-20",
-            category: "workshop",
-            participants: 45,
-            organizer: "Youth Initiative Nepal",
-            status: "upcoming"
-        },
-        {
-            id: 2,
-            title: "Digital Literacy Training",
-            description: "Teaching digital skills to bridge the technology gap in rural communities.",
-            image: "/images/backgroundImage.jpg",
-            location: "Pokhara Technology Hub",
-            date: "2025-10-25",
-            category: "training",
-            participants: 30,
-            organizer: "Digital Nepal Initiative",
-            status: "upcoming"
-        },
-        {
-            id: 3,
-            title: "Community Health Awareness Campaign",
-            description: "Promoting health and wellness practices in local communities through education and outreach.",
-            image: "/images/aboutOurOrgImage.jpg",
-            location: "Chitwan Rural Communities",
-            date: "2025-11-01",
-            category: "awareness",
-            participants: 500,
-            organizer: "Health for All Initiative",
-            status: "upcoming"
-        },
-        {
-            id: 4,
-            title: "Environmental Conservation Seminar",
-            description: "Discussing climate change impacts and sustainable practices for environmental protection.",
-            image: "/images/aboutOurOrgImage1.jpg",
-            location: "Lalitpur Convention Center",
-            date: "2025-11-05",
-            category: "seminar",
-            participants: 150,
-            organizer: "Green Future Nepal",
-            status: "upcoming"
-        },
-        {
-            id: 5,
-            title: "Women Empowerment Workshop",
-            description: "Supporting women's rights and economic empowerment through skill development programs.",
-            image: "/images/aboutusImage.jpg",
-            location: "Bhaktapur Women's Center",
-            date: "2025-11-10",
-            category: "workshop",
-            participants: 75,
-            organizer: "Women's Rights Organization",
-            status: "upcoming"
-        },
-        {
-            id: 6,
-            title: "Youth Entrepreneurship Fair",
-            description: "Showcasing innovative business ideas and connecting young entrepreneurs with investors.",
-            image: "/images/backgroundImage.jpg",
-            location: "Kathmandu Exhibition Center",
-            date: "2025-11-15",
-            category: "community",
-            participants: 200,
-            organizer: "Startup Nepal",
-            status: "upcoming"
-        },
-        {
-            id: 7,
-            title: "Rural Development Workshop",
-            description: "Training local leaders in sustainable development practices for rural communities.",
-            image: "/images/aboutOurOrgImage.jpg",
-            location: "Dhading District Office",
-            date: "2025-09-15",
-            category: "workshop",
-            participants: 60,
-            organizer: "Rural Development Initiative",
-            status: "completed"
-        },
-        {
-            id: 8,
-            title: "Technology Skills Bootcamp",
-            description: "Intensive coding and web development training for unemployed youth.",
-            image: "/images/backgroundImage.jpg",
-            location: "Kathmandu Tech Park",
-            date: "2025-09-20",
-            category: "training",
-            participants: 40,
-            organizer: "Tech Education Nepal",
-            status: "completed"
-        }
-    ]);
 
     // Filter activities based on search and filters
     const filteredActivities = activities.filter(activity => {
@@ -252,7 +162,7 @@ export default function Activities() {
                                 {/* Activity Image */}
                                 <div className="relative overflow-hidden h-56">
                                     <img 
-                                        src={activity.image} 
+                                        src={activity.image_path ? `/storage/${activity.image_path}` : '/images/backgroundImage.jpg'} 
                                         alt={activity.title}
                                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                                     />

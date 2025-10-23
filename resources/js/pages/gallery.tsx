@@ -2,85 +2,35 @@ import { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import { Camera, Search, Eye, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import PublicHeader from '@/components/public-header';
+import { PageProps } from '@/types';
 
 interface GalleryImage {
     id: number;
-    name: string;
-    src: string;
+    title: string;
+    description: string | null;
+    image_path: string;
+    alt_text: string | null;
+    sort_order: number;
+    is_active: boolean;
+    category: string | null;
+    created_at: string;
+    updated_at: string;
 }
 
-export default function GalleryPage() {
+interface GalleryPageProps extends PageProps {
+    images: GalleryImage[];
+}
+
+export default function GalleryPage({ images }: GalleryPageProps) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-    // Sample gallery data - this would normally come from API/database
-    const [images] = useState<GalleryImage[]>([
-        {
-            id: 1,
-            name: "Youth Leadership Summit 2025",
-            src: "/images/aboutusImage.jpg"
-        },
-        {
-            id: 2,
-            name: "Digital Skills Training Workshop",
-            src: "/images/backgroundImage.jpg"
-        },
-        {
-            id: 3,
-            name: "Community Health Awareness Campaign",
-            src: "/images/aboutOurOrgImage.jpg"
-        },
-        {
-            id: 4,
-            name: "Environmental Conservation Project",
-            src: "/images/aboutOurOrgImage1.jpg"
-        },
-        {
-            id: 5,
-            name: "Women Empowerment Workshop Success",
-            src: "/images/aboutusImage.jpg"
-        },
-        {
-            id: 6,
-            name: "Youth Innovation Lab Opening",
-            src: "/images/backgroundImage.jpg"
-        },
-        {
-            id: 7,
-            name: "Rural Development Initiative",
-            src: "/images/aboutOurOrgImage.jpg"
-        },
-        {
-            id: 8,
-            name: "Youth Entrepreneurship Fair",
-            src: "/images/aboutOurOrgImage1.jpg"
-        },
-        {
-            id: 9,
-            name: "Skills Development Workshop",
-            src: "/images/aboutusImage.jpg"
-        },
-        {
-            id: 10,
-            name: "Community Center Inauguration",
-            src: "/images/backgroundImage.jpg"
-        },
-        {
-            id: 11,
-            name: "Youth Sports Tournament",
-            src: "/images/aboutOurOrgImage.jpg"
-        },
-        {
-            id: 12,
-            name: "Educational Scholarship Award Ceremony",
-            src: "/images/aboutOurOrgImage1.jpg"
-        }
-    ]);
-
     // Filter images based on search
     const filteredImages = images.filter(image => {
-        const matchesSearch = image.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            (image.description && image.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                            (image.category && image.category.toLowerCase().includes(searchTerm.toLowerCase()));
         return matchesSearch;
     });
 
@@ -162,8 +112,8 @@ export default function GalleryPage() {
                             >
                                 {/* Image */}
                                 <img 
-                                    src={image.src} 
-                                    alt={image.name}
+                                    src={`/storage/${image.image_path}`} 
+                                    alt={image.alt_text || image.title}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
                                 
@@ -180,8 +130,11 @@ export default function GalleryPage() {
                                 {/* Content */}
                                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                                     <h3 className="text-sm font-bold text-center line-clamp-2">
-                                        {image.name}
+                                        {image.title}
                                     </h3>
+                                    {image.category && (
+                                        <p className="text-xs text-center opacity-80 mt-1">{image.category}</p>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -237,14 +190,20 @@ export default function GalleryPage() {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <img 
-                            src={selectedImage.src} 
-                            alt={selectedImage.name}
+                            src={`/storage/${selectedImage.image_path}`} 
+                            alt={selectedImage.alt_text || selectedImage.title}
                             className="w-full h-full object-contain rounded-lg"
                         />
                         
                         {/* Image Info */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-6 rounded-b-lg">
-                            <h3 className="text-xl font-bold text-center">{selectedImage.name}</h3>
+                            <h3 className="text-xl font-bold text-center">{selectedImage.title}</h3>
+                            {selectedImage.description && (
+                                <p className="text-sm text-center mt-2 opacity-90">{selectedImage.description}</p>
+                            )}
+                            {selectedImage.category && (
+                                <p className="text-xs text-center mt-1 opacity-75">Category: {selectedImage.category}</p>
+                            )}
                         </div>
 
                         {/* Image Counter */}
