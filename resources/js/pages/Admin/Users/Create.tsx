@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { PageProps, BreadcrumbItem } from '@/types';
@@ -19,18 +19,19 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Create({ auth }: PageProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
-        return null;
-    }
-
+    // Move hooks to the top before any conditional returns
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',
         password: '',
         role: 'user',
     });
+
+    // Client-side security check
+    if (!auth.user || auth.user.role !== 'admin') {
+        window.location.href = '/login';
+        return null;
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

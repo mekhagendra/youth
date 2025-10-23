@@ -32,18 +32,19 @@ interface EditProps extends PageProps {
 }
 
 export default function Edit({ auth, user }: EditProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
-        return null;
-    }
-
+    // Move hooks to the top before any conditional returns
     const { data, setData, put, processing, errors } = useForm({
         name: user.name,
         email: user.email,
         password: '',
         role: user.role,
     });
+
+    // Client-side security check
+    if (!auth.user || auth.user.role !== 'admin') {
+        window.location.href = '/login';
+        return null;
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

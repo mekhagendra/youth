@@ -28,9 +28,15 @@ interface Supporter {
     updated_at: string;
 }
 
+interface PaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
 interface PaginatedSupporters {
     data: Supporter[];
-    links: any[];
+    links: PaginationLink[];
     meta: {
         current_page: number;
         last_page: number;
@@ -39,8 +45,14 @@ interface PaginatedSupporters {
     };
 }
 
+interface FlashMessages {
+    success?: string;
+    error?: string;
+}
+
 interface Props extends PageProps {
     supporters: PaginatedSupporters;
+    flash?: FlashMessages;
 }
 
 const Index: React.FC<Props> = ({ supporters, flash }) => {
@@ -70,14 +82,14 @@ const Index: React.FC<Props> = ({ supporters, flash }) => {
                 </div>
 
                 {/* Flash Messages */}
-                {(flash as any)?.success && (
+                {flash?.success && (
                     <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-                        {(flash as any).success}
+                        {flash.success}
                     </div>
                 )}
-                {(flash as any)?.error && (
+                {flash?.error && (
                     <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                        {(flash as any).error}
+                        {flash.error}
                     </div>
                 )}
 

@@ -27,7 +27,7 @@ interface ActivitiesProps extends SharedData {
 }
 
 export default function Activities() {
-    const { auth, activities } = usePage<ActivitiesProps>().props;
+    const { activities } = usePage<ActivitiesProps>().props;
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [selectedStatus, setSelectedStatus] = useState<string>('all');

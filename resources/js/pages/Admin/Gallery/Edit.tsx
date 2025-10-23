@@ -47,12 +47,7 @@ interface FormData {
 }
 
 export default function Edit({ auth, galleryImage }: EditProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
-        return null;
-    }
-
+    // Move hooks to the top before any conditional returns
     const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     const { data, setData, post, processing, errors } = useForm<FormData>({
@@ -65,6 +60,12 @@ export default function Edit({ auth, galleryImage }: EditProps) {
         category: galleryImage.category || '',
         _method: 'put',
     });
+
+    // Client-side security check
+    if (!auth.user || auth.user.role !== 'admin') {
+        window.location.href = '/login';
+        return null;
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;

@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface CreateProps extends PageProps {}
+// Using PageProps directly instead of empty interface extension
 
 interface FormData {
     title: string;
@@ -35,13 +35,8 @@ interface FormData {
     sort_order: number;
 }
 
-export default function Create({ auth }: CreateProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
-        return null;
-    }
-
+export default function Create({ auth }: PageProps) {
+    // Move hooks to the top before any conditional returns
     const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     const { data, setData, post, processing, errors } = useForm<FormData>({
@@ -58,6 +53,12 @@ export default function Create({ auth }: CreateProps) {
         is_active: true,
         sort_order: 0,
     });
+
+    // Client-side security check
+    if (!auth.user || auth.user.role !== 'admin') {
+        window.location.href = '/login';
+        return null;
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
@@ -248,7 +249,7 @@ export default function Create({ auth }: CreateProps) {
                                     <select
                                         id="category"
                                         value={data.category}
-                                        onChange={(e) => setData('category', e.target.value as any)}
+                                        onChange={(e) => setData('category', e.target.value as FormData['category'])}
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                     >
                                         <option value="workshop">Workshop</option>
@@ -270,7 +271,7 @@ export default function Create({ auth }: CreateProps) {
                                     <select
                                         id="status"
                                         value={data.status}
-                                        onChange={(e) => setData('status', e.target.value as any)}
+                                        onChange={(e) => setData('status', e.target.value as FormData['status'])}
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                     >
                                         <option value="upcoming">Upcoming</option>

@@ -22,9 +22,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface Props extends PageProps {}
+// Using PageProps directly instead of empty interface extension
 
-const Create: React.FC<Props> = () => {
+const Create: React.FC<PageProps> = () => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     
     const { data, setData, post, processing, errors } = useForm({

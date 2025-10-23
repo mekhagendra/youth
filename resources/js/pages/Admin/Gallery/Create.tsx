@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface CreateProps extends PageProps {}
+// Using PageProps directly instead of empty interface extension
 
 interface FormData {
     title: string;
@@ -30,13 +30,8 @@ interface FormData {
     category: string;
 }
 
-export default function Create({ auth }: CreateProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
-        return null;
-    }
-
+export default function Create({ auth }: PageProps) {
+    // Move hooks to the top before any conditional returns
     const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     const { data, setData, post, processing, errors } = useForm<FormData>({
@@ -48,6 +43,12 @@ export default function Create({ auth }: CreateProps) {
         is_active: true,
         category: '',
     });
+
+    // Client-side security check
+    if (!auth.user || auth.user.role !== 'admin') {
+        window.location.href = '/login';
+        return null;
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
