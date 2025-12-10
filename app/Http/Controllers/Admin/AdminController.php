@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Content;
 use App\Models\GalleryImage;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +20,6 @@ class AdminController extends Controller
 
         $stats = [
             'totalUsers' => User::count(),
-            'totalContent' => Content::count(),
             'totalGalleryImages' => GalleryImage::count(),
             'totalActivities' => Activity::count(),
             'upcomingActivities' => Activity::upcoming()->count(),

@@ -13,7 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface DashboardProps extends PageProps {
     stats: {
         totalUsers: number;
-        totalContent: number;
+        totalTeams: number;
         totalGalleryImages?: number;
         totalActivities?: number;
         upcomingActivities?: number;
@@ -44,14 +44,14 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <div className="text-gray-900">
-                            <h3 className="text-lg font-semibold">Total Users</h3>
+                            <h3 className="text-lg font-semibold">Total Access Users</h3>
                             <p className="text-3xl font-bold text-blue-600">{stats.totalUsers}</p>
                         </div>
                     </div>
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <div className="text-gray-900">
-                            <h3 className="text-lg font-semibold">Total Content</h3>
-                            <p className="text-3xl font-bold text-green-600">{stats.totalContent}</p>
+                            <h3 className="text-lg font-semibold">Total Teams</h3>
+                            <p className="text-3xl font-bold text-green-600">{stats.totalTeams}</p>
                         </div>
                     </div>
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
@@ -69,7 +69,7 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                             </p>
                         </div>
                     </div>
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    {/* <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <div className="text-gray-900">
                             <h3 className="text-lg font-semibold">Quick Actions</h3>
                             <div className="mt-2 space-y-2">
@@ -87,7 +87,7 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                                 </Link>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Management Sections */}
@@ -124,19 +124,6 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                                         <span className="text-gray-500">→</span>
                                     </div>
                                 </Link>
-                            </div>
-
-                            {/* Recent Users */}
-                            <div className="mt-4">
-                                <h4 className="font-medium mb-2">Recent Users</h4>
-                                <div className="space-y-2">
-                                    {stats.recentUsers.map((user) => (
-                                        <div key={user.id} className="text-sm text-gray-600">
-                                            <span className="font-medium">{user.name}</span>
-                                            <span className="text-gray-400 ml-2">{user.email}</span>
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -177,50 +164,7 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                         </div>
                     </div>
 
-                    {/* Content Management */}
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-lg font-semibold">Content Management</h3>
-                                <Link
-                                    href="/admin/content"
-                                    className="text-blue-600 hover:text-blue-800"
-                                >
-                                    View All
-                                </Link>
-                            </div>
-                            
-                            <div className="space-y-3">
-                                <Link
-                                    href="/admin/content"
-                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
-                                >
-                                    <div className="flex justify-between">
-                                        <span>Manage Content</span>
-                                        <span className="text-gray-500">→</span>
-                                    </div>
-                                </Link>
-                                <Link
-                                    href="/admin/content/create"
-                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
-                                >
-                                    <div className="flex justify-between">
-                                        <span>Create New Content</span>
-                                        <span className="text-gray-500">→</span>
-                                    </div>
-                                </Link>
-                                <Link
-                                    href="/admin/pages"
-                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
-                                >
-                                    <div className="flex justify-between">
-                                        <span>Manage Pages</span>
-                                        <span className="text-gray-500">→</span>
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     {/* Gallery Management */}
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">

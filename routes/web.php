@@ -119,9 +119,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // User Management
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
     
-    // Content Management
-    Route::resource('content', \App\Http\Controllers\Admin\ContentController::class);
-    
     // Gallery Management
     Route::resource('gallery', \App\Http\Controllers\Admin\GalleryImageController::class);
     
