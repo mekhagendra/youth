@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import { Camera, Search, Eye, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import PublicHeader from '@/components/public-header';
+import Footer from '@/components/footer';
 import { PageProps } from '@/types';
 
 interface GalleryImage {
@@ -213,6 +214,7 @@ export default function GalleryPage({ images }: GalleryPageProps) {
                     </div>
                 </div>
             )}
+            <Footer />
         </>
     );
 }

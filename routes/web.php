@@ -50,6 +50,64 @@ Route::get('/opportunities/volunteer', function () {
     return Inertia::render('opportunities/volunteer');
 })->name('volunteer-opportunities');
 
+Route::get('/members/signup', function () {
+    return Inertia::render('members/signup');
+})->name('members.signup');
+
+Route::get('/resources', function () {
+    $resources = \App\Models\Resource::active()->ordered()->get();
+    return Inertia::render('resources', [
+        'resources' => $resources
+    ]);
+})->name('resources');
+
+Route::get('/resources/{resource}/download', [\App\Http\Controllers\Admin\ResourceController::class, 'download'])->name('resources.download');
+
+Route::get('/contact', function () {
+    return Inertia::render('contact');
+})->name('contact');
+
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/ourOrganization', function () {
+    return Inertia::render('ourOrganization');
+})->name('ourOrganization');
+
+Route::get('/ourTeam', function () {
+    $teams = \App\Models\Team::with(['members' => function($query) {
+        $query->where('is_active', true)
+              ->orderBy('team_members.rank');
+    }])
+    ->where('is_active', true)
+    ->ordered()
+    ->get()
+    ->map(function ($team) {
+        return [
+            'id' => $team->id,
+            'name' => $team->name,
+            'description' => $team->description,
+            'members' => $team->members->map(function ($member) {
+                return [
+                    'id' => $member->id,
+                    'membership_id' => $member->membership_id,
+                    'name' => $member->name,
+                    'email' => $member->email,
+                    'phone' => $member->phone,
+                    'photo' => $member->photo ? asset('storage/' . $member->photo) : null,
+                    'designation' => $member->pivot->designation,
+                    'rank' => $member->pivot->rank,
+                    'show_email' => $member->show_email,
+                    'show_phone' => $member->show_phone,
+                ];
+            }),
+        ];
+    });
+    
+    return Inertia::render('ourTeam', [
+        'teams' => $teams
+    ]);
+})->name('ourTeam');
+
 // API Routes
 Route::prefix('api')->group(function () {
     Route::get('/supporters', [\App\Http\Controllers\Api\SupporterController::class, 'index']);
@@ -72,6 +130,17 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     
     // Supporter Management
     Route::resource('supporters', \App\Http\Controllers\Admin\SupporterController::class);
+    
+    // Member Management
+    Route::resource('members', \App\Http\Controllers\Admin\MemberController::class);
+    Route::post('/members/{member}/activate', [\App\Http\Controllers\Admin\MemberController::class, 'activate'])->name('members.activate');
+    Route::post('/members/{member}/deactivate', [\App\Http\Controllers\Admin\MemberController::class, 'deactivate'])->name('members.deactivate');
+    
+    // Team Management
+    Route::resource('teams', \App\Http\Controllers\Admin\TeamController::class);
+    
+    // Resource Management
+    Route::resource('resources', \App\Http\Controllers\Admin\ResourceController::class);
 });
 
 require __DIR__.'/settings.php';

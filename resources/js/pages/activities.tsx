@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Calendar, MapPin, Eye, ArrowRight, Search, Filter } from 'lucide-react';
 import PublicHeader from '@/components/public-header';
+import Footer from '@/components/footer';
 import { type SharedData } from '@/types';
 
 interface Activity {
@@ -234,6 +235,7 @@ export default function Activities() {
                     )}
                 </div>
             </div>
+            <Footer />
         </>
     );
 }

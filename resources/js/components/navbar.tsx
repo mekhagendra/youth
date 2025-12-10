@@ -26,14 +26,15 @@ const navigationItems = [
         title: 'ABOUT',
         href: '/about',
         subItems: [
-            { title: 'Our Story', href: '/about/story' },
-            { title: 'Our Team', href: '/about/team' },
+            { title: 'About Our Organization', href: '/ourOrganization' },
+            { title: 'Our Team', href: '/ourTeam' },
         ]
     },
     {
         title: 'ACTIVITIES',
         href: '/activities',
         subItems: [
+            { title: 'Upcoming Programs', href: '/activities/upcoming' },
             { title: 'Recent Programs', href: '/activities/recent' },
             { title: 'Ongoing Projects', href: '/activities/ongoing' },
             { title: 'Success Stories', href: '/activities/success' },

@@ -141,6 +141,42 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                         </div>
                     </div>
 
+                    {/* Member Management */}
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold">Member Management</h3>
+                                <Link
+                                    href="/admin/members"
+                                    className="text-blue-600 hover:text-blue-800"
+                                >
+                                    View All
+                                </Link>
+                            </div>
+                            
+                            <div className="space-y-3">
+                                <Link
+                                    href="/admin/members"
+                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
+                                >
+                                    <div className="flex justify-between">
+                                        <span>Manage Members</span>
+                                        <span className="text-gray-500">→</span>
+                                    </div>
+                                </Link>
+                                <Link
+                                    href="/admin/members/create"
+                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
+                                >
+                                    <div className="flex justify-between">
+                                        <span>Add New Member</span>
+                                        <span className="text-gray-500">→</span>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Content Management */}
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6">
@@ -287,6 +323,78 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                                 >
                                     <div className="flex justify-between">
                                         <span>Add New Supporter</span>
+                                        <span className="text-gray-500">→</span>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Team Management */}
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold">Team Management</h3>
+                                <Link
+                                    href="/admin/teams"
+                                    className="text-blue-600 hover:text-blue-800"
+                                >
+                                    View All
+                                </Link>
+                            </div>
+                            
+                            <div className="space-y-3">
+                                <Link
+                                    href="/admin/teams"
+                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
+                                >
+                                    <div className="flex justify-between">
+                                        <span>Manage Teams</span>
+                                        <span className="text-gray-500">→</span>
+                                    </div>
+                                </Link>
+                                <Link
+                                    href="/admin/teams/create"
+                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
+                                >
+                                    <div className="flex justify-between">
+                                        <span>Create New Team</span>
+                                        <span className="text-gray-500">→</span>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Resource Management */}
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold">Resource Management</h3>
+                                <Link
+                                    href="/admin/resources"
+                                    className="text-blue-600 hover:text-blue-800"
+                                >
+                                    View All
+                                </Link>
+                            </div>
+                            
+                            <div className="space-y-3">
+                                <Link
+                                    href="/admin/resources"
+                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
+                                >
+                                    <div className="flex justify-between">
+                                        <span>Manage Resources</span>
+                                        <span className="text-gray-500">→</span>
+                                    </div>
+                                </Link>
+                                <Link
+                                    href="/admin/resources/create"
+                                    className="block p-3 bg-gray-50 rounded hover:bg-gray-100"
+                                >
+                                    <div className="flex justify-between">
+                                        <span>Upload New Resource</span>
                                         <span className="text-gray-500">→</span>
                                     </div>
                                 </Link>

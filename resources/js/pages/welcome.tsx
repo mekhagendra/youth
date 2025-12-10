@@ -1,5 +1,5 @@
 import { type SharedData } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, usePage, Link } from '@inertiajs/react';
 import PublicHeader from '@/components/public-header';
 import Message from '@/components/message';
 import Activity from '@/components/activity';
@@ -262,21 +262,25 @@ export default function Welcome() {
                             community service, or leadership—your time and energy can create real impact.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Button 
-                                size="lg"
-                                className="bg-green-600 text-white hover:bg-green-700 px-8 py-3 rounded-lg text-lg flex items-center space-x-2"
-                            >
-                                <UserPlus className="h-5 w-5" />
-                                <span>Join as Member</span>
-                            </Button>
-                            <Button 
-                                size="lg"
-                                variant="outline"
-                                className="bg-green-600 text-white hover:bg-green-700 px-8 py-3 rounded-lg text-lg flex items-center space-x-2"
-                            >
-                                <Heart className="h-5 w-5" />
-                                <span>Join as Volunteer</span>
-                            </Button>
+                            <Link href="/members/signup">
+                                <Button 
+                                    size="lg"
+                                    className="bg-green-600 text-white hover:bg-green-700 px-8 py-3 rounded-lg text-lg flex items-center space-x-2"
+                                >
+                                    <UserPlus className="h-5 w-5" />
+                                    <span>Join as Member</span>
+                                </Button>
+                            </Link>
+                            <Link href="/opportunities/volunteer">
+                                <Button 
+                                    size="lg"
+                                    variant="outline"
+                                    className="bg-green-600 text-white hover:bg-green-700 px-8 py-3 rounded-lg text-lg flex items-center space-x-2"
+                                >
+                                    <Heart className="h-5 w-5" />
+                                    <span>Join as Volunteer</span>
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </section>
