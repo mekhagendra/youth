@@ -35,6 +35,11 @@ export default function Profile({
         auth.user.profile_picture ? `/storage/${auth.user.profile_picture}` : null
     );
 
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -132,7 +137,14 @@ export default function Profile({
                                         required
                                         autoComplete="name"
                                         placeholder="Full name"
+                                        readOnly={!isAdmin}
+                                        disabled={!isAdmin}
                                     />
+                                    {!isAdmin && (
+                                        <p className="text-xs text-gray-500">
+                                            Contact an administrator to change your name.
+                                        </p>
+                                    )}
 
                                     <InputError
                                         className="mt-2"
@@ -150,7 +162,14 @@ export default function Profile({
                                         name="designation"
                                         autoComplete="organization-title"
                                         placeholder="e.g., Member, Volunteer, Program Coordinator"
+                                        readOnly={!isAdmin}
+                                        disabled={!isAdmin}
                                     />
+                                    {!isAdmin && (
+                                        <p className="text-xs text-gray-500">
+                                            Contact an administrator to change your designation.
+                                        </p>
+                                    )}
 
                                     <InputError
                                         className="mt-2"

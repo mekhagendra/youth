@@ -25,15 +25,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 // Using PageProps directly instead of empty interface extension
 
 const Create: React.FC<PageProps> = ({ auth }) => {
-    const isAdmin = auth.user && (
-        auth.user.user_type === 'System Admin' || 
-        auth.user.user_type === 'System Manager'
-    );
-
-    if (!isAdmin) {
-        return null;
-    }
-
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     
     const { data, setData, post, processing, errors } = useForm({
@@ -43,6 +34,15 @@ const Create: React.FC<PageProps> = ({ auth }) => {
         display_order: 0,
         is_active: true,
     });
+
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

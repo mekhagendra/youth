@@ -43,15 +43,28 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'user_type' => 'required|in:Guest,Member,Volunteer,Intern,Employee,System Admin,System Manager',
+            'designation' => 'nullable|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'user_type' => $request->user_type,
+            'designation' => $request->designation,
             'email_verified_at' => now(),
-        ]);
+        ];
+
+        // Handle profile picture upload
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images/profiles'), $filename);
+            $data['profile_picture'] = 'images/profiles/' . $filename;
+        }
+
+        User::create($data);
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
@@ -77,16 +90,32 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'user_type' => 'required|in:Guest,Member,Volunteer,Intern,Employee,System Admin,System Manager',
             'password' => 'nullable|string|min:8',
+            'designation' => 'nullable|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data = [
             'name' => $request->name,
             'email' => $request->email,
             'user_type' => $request->user_type,
+            'designation' => $request->designation,
         ];
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
+        }
+
+        // Handle profile picture upload
+        if ($request->hasFile('profile_picture')) {
+            // Delete old profile picture if exists
+            if ($user->profile_picture && file_exists(public_path($user->profile_picture))) {
+                unlink(public_path($user->profile_picture));
+            }
+            
+            $file = $request->file('profile_picture');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images/profiles'), $filename);
+            $data['profile_picture'] = 'images/profiles/' . $filename;
         }
 
         $user->update($data);

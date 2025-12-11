@@ -22,15 +22,6 @@ interface Props extends PageProps {
 }
 
 export default function Edit({ auth, workingArea }: Props) {
-    const isAdmin = auth.user && (
-        auth.user.user_type === 'System Admin' || 
-        auth.user.user_type === 'System Manager'
-    );
-
-    if (!isAdmin) {
-        return null;
-    }
-
     const { data, setData, post, processing, errors } = useForm({
         title: workingArea.title,
         slug: workingArea.slug,
@@ -42,6 +33,15 @@ export default function Edit({ auth, workingArea }: Props) {
     });
 
     const [imagePreview, setImagePreview] = useState<string | null>(workingArea.image_url);
+
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

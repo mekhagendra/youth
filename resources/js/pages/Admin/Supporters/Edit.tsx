@@ -31,20 +31,11 @@ interface Supporter {
     is_active: boolean;
 }
 
-interface Props extends PageProps {
+interface EditProps extends PageProps {
     supporter: Supporter;
 }
 
-const Edit: React.FC<Props> = ({ auth, supporter }) => {
-    const isAdmin = auth.user && (
-        auth.user.user_type === 'System Admin' || 
-        auth.user.user_type === 'System Manager'
-    );
-
-    if (!isAdmin) {
-        return null;
-    }
-
+export default function Edit({ auth, supporter }: EditProps) {
     const [previewUrl, setPreviewUrl] = useState<string | null>(
         supporter.logo_path ? `/storage/${supporter.logo_path}` : null
     );
@@ -57,6 +48,15 @@ const Edit: React.FC<Props> = ({ auth, supporter }) => {
         is_active: supporter.is_active,
         _method: 'PUT',
     });
+
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -227,6 +227,4 @@ const Edit: React.FC<Props> = ({ auth, supporter }) => {
             </div>
         </AppLayout>
     );
-};
-
-export default Edit;
+}

@@ -23,6 +23,9 @@ interface User {
     name: string;
     email: string;
     role: string;
+    user_type: string;
+    designation?: string;
+    profile_picture?: string;
     created_at: string;
     updated_at: string;
 }
@@ -33,11 +36,14 @@ interface EditProps extends PageProps {
 
 export default function Edit({ auth, user }: EditProps) {
     // Move hooks to the top before any conditional returns
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         name: user.name,
         email: user.email,
         password: '',
         user_type: user.user_type,
+        designation: user.designation || '',
+        profile_picture: null as File | null,
+        _method: 'PUT',
     });
 
     const isAdmin = auth.user && (
@@ -51,7 +57,13 @@ export default function Edit({ auth, user }: EditProps) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/users/${user.id}`);
+        post(`/admin/users/${user.id}`, {
+            forceFormData: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                setData('profile_picture', null);
+            },
+        });
     };
 
     return (
@@ -135,6 +147,48 @@ export default function Edit({ auth, user }: EditProps) {
                                     <option value="System Admin">System Admin</option>
                                 </select>
                                 {errors.user_type && <div className="text-red-600 text-sm mt-1">{errors.user_type}</div>}
+                            </div>
+
+                            <div className="mb-4">
+                                <label htmlFor="designation" className="block text-sm font-medium text-gray-700">
+                                    Designation
+                                </label>
+                                <input
+                                    type="text"
+                                    id="designation"
+                                    value={data.designation}
+                                    onChange={(e) => setData('designation', e.target.value)}
+                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                />
+                                {errors.designation && <div className="text-red-600 text-sm mt-1">{errors.designation}</div>}
+                            </div>
+
+                            <div className="mb-4">
+                                <label htmlFor="profile_picture" className="block text-sm font-medium text-gray-700">
+                                    Profile Picture
+                                </label>
+                                {user.profile_picture && (
+                                    <div className="mb-2">
+                                        <img 
+                                            src={`/${user.profile_picture}`} 
+                                            alt="Current profile" 
+                                            className="h-20 w-20 rounded-full object-cover border-2 border-gray-200"
+                                        />
+                                    </div>
+                                )}
+                                <input
+                                    type="file"
+                                    id="profile_picture"
+                                    accept="image/*"
+                                    onChange={(e) => setData('profile_picture', e.target.files?.[0] || null)}
+                                    className="mt-1 block w-full text-sm text-gray-500
+                                        file:mr-4 file:py-2 file:px-4
+                                        file:rounded-md file:border-0
+                                        file:text-sm file:font-semibold
+                                        file:bg-blue-50 file:text-blue-700
+                                        hover:file:bg-blue-100"
+                                />
+                                {errors.profile_picture && <div className="text-red-600 text-sm mt-1">{errors.profile_picture}</div>}
                             </div>
 
                             <div className="flex items-center justify-end">

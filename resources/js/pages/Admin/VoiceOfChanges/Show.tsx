@@ -1,8 +1,8 @@
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, ThumbsUp, ThumbsDown, EyeOff, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { useState } from 'react';
 import { PageProps } from '@/types';
@@ -27,19 +27,11 @@ interface VoiceOfChange {
     updated_at: string;
 }
 
-interface Props extends PageProps {
+interface ShowProps extends PageProps {
     message: VoiceOfChange;
 }
 
-export default function Show({ auth, message }: Props) {
-    const isAdmin = auth.user && (
-        auth.user.user_type === 'System Admin' || 
-        auth.user.user_type === 'System Manager'
-    );
-
-    if (!isAdmin) {
-        return null;
-    }
+export default function Show({ auth, message }: ShowProps) {
     const [showApproveDialog, setShowApproveDialog] = useState(false);
     const [showRejectDialog, setShowRejectDialog] = useState(false);
 
@@ -50,6 +42,15 @@ export default function Show({ auth, message }: Props) {
     const rejectForm = useForm({
         admin_notes: '',
     });
+
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
 
     const handleApprove = (e: React.FormEvent) => {
         e.preventDefault();

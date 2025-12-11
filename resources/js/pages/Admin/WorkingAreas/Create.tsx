@@ -8,14 +8,6 @@ import { Button } from '@/components/ui/button';
 import { PageProps } from '@/types';
 
 export default function Create({ auth }: PageProps) {
-    const isAdmin = auth.user && (
-        auth.user.user_type === 'System Admin' || 
-        auth.user.user_type === 'System Manager'
-    );
-
-    if (!isAdmin) {
-        return null;
-    }
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         slug: '',
@@ -26,6 +18,15 @@ export default function Create({ auth }: PageProps) {
     });
 
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

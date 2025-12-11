@@ -16,8 +16,11 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $user = $this->user();
+        $isAdmin = $user && in_array($user->user_type, ['System Admin', 'System Manager']);
+
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => $isAdmin ? ['required', 'string', 'max:255'] : ['sometimes', 'in:' . $user->name],
 
             'email' => [
                 'required',
@@ -25,12 +28,12 @@ class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                Rule::unique(User::class)->ignore($user->id),
             ],
 
             'profile_picture' => ['nullable', 'image', 'mimes:jpeg,jpg,png,gif', 'max:2048'],
             
-            'designation' => ['nullable', 'string', 'max:255'],
+            'designation' => $isAdmin ? ['nullable', 'string', 'max:255'] : ['sometimes', 'in:' . ($user->designation ?? '')],
         ];
     }
 }

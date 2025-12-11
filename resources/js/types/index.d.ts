@@ -64,7 +64,7 @@ export interface UserApplication {
     id: number;
     user_id: number;
     requested_user_type: ApplicationUserType;
-    application_data?: Record<string, any>;
+    application_data?: Record<string, unknown>;
     status: ApplicationStatus;
     admin_notes?: string;
     admin_id?: number;

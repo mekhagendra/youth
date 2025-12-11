@@ -1,6 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { Eye, Trash2, Clock, CheckCircle, XCircle, ThumbsUp, ThumbsDown, EyeOff } from 'lucide-react';
+import { Eye, Trash2, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { PageProps } from '@/types';
@@ -29,6 +29,8 @@ interface Props extends PageProps {
 }
 
 export default function Index({ auth, messages }: Props) {
+    const [statusFilter, setStatusFilter] = useState('all');
+
     const isAdmin = auth.user && (
         auth.user.user_type === 'System Admin' || 
         auth.user.user_type === 'System Manager'
@@ -37,7 +39,6 @@ export default function Index({ auth, messages }: Props) {
     if (!isAdmin) {
         return null;
     }
-    const [statusFilter, setStatusFilter] = useState('all');
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this message?')) {

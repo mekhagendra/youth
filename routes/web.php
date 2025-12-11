@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\VoiceOfChange;
 
 Route::get('/', function () {
     $galleryImages = \App\Models\GalleryImage::active()->ordered()->limit(6)->get();
@@ -46,6 +47,39 @@ Route::get('/gallery', function () {
         'images' => $images
     ]);
 })->name('gallery');
+
+// API endpoint for approved voice of changes
+Route::get('/api/voice-of-changes', function () {
+    return VoiceOfChange::approved()
+        ->with(['user:id,name,designation,profile_picture'])
+        ->latest('published_at')
+        ->limit(10)
+        ->get()
+        ->map(function ($voiceOfChange) {
+            $profilePicture = $voiceOfChange->user->profile_picture;
+            $imageUrl = asset('images/aboutOurOrgImage.jpg'); // default
+            
+            if ($profilePicture) {
+                // Check if it's a storage path (profile-pictures/) or public path (images/profiles/)
+                if (str_starts_with($profilePicture, 'profile-pictures/')) {
+                    $imageUrl = asset('storage/' . $profilePicture);
+                } else if (str_starts_with($profilePicture, 'images/')) {
+                    $imageUrl = asset($profilePicture);
+                } else {
+                    // Fallback: assume it's in storage
+                    $imageUrl = asset('storage/' . $profilePicture);
+                }
+            }
+            
+            return [
+                'id' => $voiceOfChange->id,
+                'text' => $voiceOfChange->message,
+                'author' => $voiceOfChange->user->name,
+                'role' => $voiceOfChange->user->designation ?? 'Member',
+                'image' => $imageUrl,
+            ];
+        });
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

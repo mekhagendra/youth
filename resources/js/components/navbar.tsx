@@ -66,8 +66,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             href: '/opportunities',
             subItems: [
                 { title: 'Volunteer', href: '/opportunities/volunteer' },
-                { title: 'Internship', href: '/opportunities/internship' },
-                { title: 'YI Awards Application', href: '/opportunities/yiawards' },
+                { title: 'Internship', href: '/opportunities/internship' }
             ]
         },
         {

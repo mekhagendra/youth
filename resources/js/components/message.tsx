@@ -1,35 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
+interface Message {
+    id: number;
+    text: string;
+    author: string;
+    role: string;
+    image: string;
+}
+
 const Message = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
-    
-    const messages = [
-        {
-            id: 1,
-            text: "Youth Initiative has transformed my perspective on community service. Through their programs, I've gained leadership skills and confidence to make a real difference.",
-            author: "Priya Sharma",
-            role: "Youth Leader",
-            image: "/images/aboutOurOrgImage.jpg"
-        },
-        {
-            id: 2,
-            text: "The digital literacy program opened doors I never knew existed. Now I'm helping other youth in my community learn technology skills.",
-            author: "Rajesh Tamang",
-            role: "Program Graduate",
-            image: "/images/aboutOurOrgImage1.jpg"
-        },
-        {
-            id: 3,
-            text: "Being part of Youth Initiative's community outreach has shown me the power of collective action. We're creating lasting change together.",
-            author: "Sunita Thapa",
-            role: "Volunteer Coordinator",
-            image: "/images/backgroundImage.jpg"
-        }
-    ];
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fetch messages from API
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                const response = await fetch('/api/voice-of-changes');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('Fetched voice of changes:', data);
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    setMessages(data);
+                } else {
+                    console.log('No messages returned from API');
+                }
+            } catch (error) {
+                console.error('Error fetching voice of changes:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchMessages();
+    }, []);
 
     // Auto-slide functionality
     useEffect(() => {
+        if (messages.length === 0) return;
+
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % messages.length);
         }, 5000);
@@ -48,6 +62,35 @@ const Message = () => {
     const goToSlide = (index: number) => {
         setCurrentSlide(index);
     };
+
+    if (loading) {
+        return (
+            <section className="bg-gray-50 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="text-center">
+                        <p className="text-gray-600">Loading voices of change...</p>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (messages.length === 0) {
+        return (
+            <section className="bg-gray-50 py-20">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl font-bold text-gray-800 mb-4">
+                            Voices of Change
+                        </h2>
+                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                            No messages available at the moment. Check back soon!
+                        </p>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="bg-gray-50 py-20">

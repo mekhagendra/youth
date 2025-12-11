@@ -56,15 +56,6 @@ interface FormData {
 }
 
 export default function Edit({ auth, activity }: Props) {
-    const isAdmin = auth.user && (
-        auth.user.user_type === 'System Admin' || 
-        auth.user.user_type === 'System Manager'
-    );
-
-    if (!isAdmin) {
-        return null;
-    }
-
     const [imagePreview, setImagePreview] = useState<string | null>(
         activity.image_path ? `/storage/${activity.image_path}` : null
     );
@@ -84,6 +75,15 @@ export default function Edit({ auth, activity }: Props) {
         sort_order: activity.sort_order,
         _method: 'PUT',
     });
+
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
@@ -248,7 +248,7 @@ export default function Edit({ auth, activity }: Props) {
                                     <select
                                         id="category"
                                         value={data.category}
-                                        onChange={(e) => setData('category', e.target.value as any)}
+                                        onChange={(e) => setData('category', e.target.value as 'workshop' | 'seminar' | 'training' | 'community' | 'awareness')}
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                     >
                                         <option value="workshop">Workshop</option>
@@ -270,7 +270,7 @@ export default function Edit({ auth, activity }: Props) {
                                     <select
                                         id="status"
                                         value={data.status}
-                                        onChange={(e) => setData('status', e.target.value as any)}
+                                        onChange={(e) => setData('status', e.target.value as 'upcoming' | 'ongoing' | 'completed')}
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                     >
                                         <option value="upcoming">Upcoming</option>
