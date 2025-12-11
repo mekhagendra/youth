@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { PageProps } from '@/types';
+import RichTextEditor from '@/components/RichTextEditor';
 
 export default function Create({ auth }: PageProps) {
     const { data, setData, post, processing, errors } = useForm({
@@ -109,20 +110,17 @@ export default function Create({ auth }: PageProps) {
                             {/* Description */}
                             <div>
                                 <Label htmlFor="description">Description *</Label>
-                                <textarea
-                                    id="description"
-                                    value={data.description}
-                                    onChange={(e) => setData('description', e.target.value)}
-                                    rows={8}
-                                    placeholder="Describe this working area..."
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                />
+                                <div className="mt-1">
+                                    <RichTextEditor
+                                        value={data.description}
+                                        onChange={(value) => setData('description', value)}
+                                        placeholder="Describe this working area..."
+                                        error={errors.description}
+                                    />
+                                </div>
                                 <p className="mt-1 text-xs text-gray-500">
-                                    You can use HTML formatting for better presentation.
+                                    Use the toolbar to format your text with headings, lists, and more.
                                 </p>
-                                {errors.description && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.description}</p>
-                                )}
                             </div>
 
                             {/* Image */}

@@ -1,4 +1,4 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { FileText, Download, Calendar, User, FileType, Eye } from 'lucide-react';
 import PublicHeader from '@/components/public-header';
 import Footer from '@/components/footer';
@@ -173,13 +173,13 @@ export default function Resources() {
                                         </div>
 
                                         {/* Download Button */}
-                                        <Link
+                                        <a
                                             href={`/resources/${resource.id}/download`}
                                             className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md"
                                         >
                                             <Download className="h-5 w-5" />
                                             Download Now
-                                        </Link>
+                                        </a>
                                     </div>
                                 </div>
                             ))}

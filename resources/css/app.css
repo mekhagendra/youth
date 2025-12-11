@@ -2,6 +2,53 @@
 
 @import "tw-animate-css";
 
+/* Tiptap Editor Styles */
+.ProseMirror {
+    outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: #adb5bd;
+    pointer-events: none;
+    height: 0;
+}
+
+.ProseMirror h2 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+    padding-left: 1.5em;
+}
+
+.ProseMirror ul {
+    list-style-type: disc;
+}
+
+.ProseMirror ol {
+    list-style-type: decimal;
+}
+
+.ProseMirror blockquote {
+    border-left: 3px solid #e5e7eb;
+    padding-left: 1em;
+    margin-left: 0;
+    font-style: italic;
+}
+
+.ProseMirror code {
+    background-color: #f3f4f6;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    font-size: 0.875em;
+    font-family: 'Courier New', monospace;
+}
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 

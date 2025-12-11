@@ -1,0 +1,1 @@
+import{j as n}from"./ui-CLR3-OmW.js";import{a as o}from"./button-CT_f9zPj.js";function a({message:r,className:t="",...e}){return r?n.jsx("p",{...e,className:o("text-sm text-red-600 dark:text-red-400",t),children:r}):null}export{a as I};

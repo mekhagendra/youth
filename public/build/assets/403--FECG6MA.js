@@ -1,0 +1,1 @@
+import{j as r}from"./ui-CLR3-OmW.js";import t from"./ErrorPage-BTpRnQpB.js";import"./vendor-kLSZ_uSw.js";import"./app-ileJYZUn.js";import"./app-BCvv0SPs.js";import"./createLucideIcon-Do8YEJy2.js";import"./arrow-left-CzBaIZ3J.js";const n=()=>r.jsx(t,{status:403,title:"Access Forbidden",message:"You don't have permission to access this area."});export{n as default};

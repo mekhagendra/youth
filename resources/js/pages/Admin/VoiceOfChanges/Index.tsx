@@ -31,14 +31,16 @@ interface Props extends PageProps {
 export default function Index({ auth, messages }: Props) {
     const [statusFilter, setStatusFilter] = useState('all');
 
-    const isAdmin = auth.user && (
+    const isAdmin = auth?.user && (
         auth.user.user_type === 'System Admin' || 
         auth.user.user_type === 'System Manager'
     );
 
-    if (!isAdmin) {
+    if (!auth?.user || !isAdmin) {
         return null;
     }
+
+    const safeMessages = Array.isArray(messages) ? messages : [];
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this message?')) {
@@ -66,14 +68,14 @@ export default function Index({ auth, messages }: Props) {
     };
 
     const filteredMessages = statusFilter === 'all' 
-        ? messages 
-        : messages.filter(m => m.status === statusFilter);
+        ? safeMessages 
+        : safeMessages.filter(m => m.status === statusFilter);
 
     const stats = {
-        total: messages.length,
-        pending: messages.filter(m => m.status === 'pending').length,
-        approved: messages.filter(m => m.status === 'approved').length,
-        rejected: messages.filter(m => m.status === 'rejected').length,
+        total: safeMessages.length,
+        pending: safeMessages.filter(m => m.status === 'pending').length,
+        approved: safeMessages.filter(m => m.status === 'approved').length,
+        rejected: safeMessages.filter(m => m.status === 'rejected').length,
     };
 
     return (
@@ -159,8 +161,8 @@ export default function Index({ auth, messages }: Props) {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">{message.user.name}</div>
-                                            <div className="text-xs text-gray-500">{message.user.email}</div>
+                                            <div className="text-sm text-gray-900">{message.user?.name || 'Unknown'}</div>
+                                            <div className="text-xs text-gray-500">{message.user?.email || 'N/A'}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {getStatusBadge(message.status)}

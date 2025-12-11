@@ -1,0 +1,1 @@
+import{j as r}from"./ui-CLR3-OmW.js";import o from"./ErrorPage-BTpRnQpB.js";import"./vendor-kLSZ_uSw.js";import"./app-ileJYZUn.js";import"./app-BCvv0SPs.js";import"./createLucideIcon-Do8YEJy2.js";import"./arrow-left-CzBaIZ3J.js";const a=()=>r.jsx(o,{status:500,title:"Server Error",message:"Something went wrong on our end. We're working to fix it!"});export{a as default};
