@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Head } from '@inertiajs/react';
 import { ArrowLeft, Calendar, MapPin, Users, Facebook, Twitter, Mail } from 'lucide-react';
 import PublicHeader from '@/components/public-header';
@@ -7,99 +7,26 @@ import Footer from '@/components/footer';
 interface Activity {
     id: number;
     title: string;
-    shortDescription: string;
-    fullDescription: string;
+    description: string;
+    content: string | null;
     date: string;
     location: string;
-    participants: number;
+    participants: number | null;
     image: string;
     category: string;
     organizer: string;
-    objectives: string[];
-    outcomes: string[];
-    gallery?: string[];
+    status: string;
 }
 
 interface ActivityDetailProps {
-    id: string;
+    activity: Activity;
 }
 
-const ActivityDetail: React.FC<ActivityDetailProps> = ({ id }) => {
-    const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
-
-    useEffect(() => {
-        // Static activities data
-        const activities: Activity[] = [
-            {
-                id: 1,
-                title: "Youth Leadership Summit 2024",
-                shortDescription: "Empowering tomorrow's leaders through innovative workshops and networking opportunities.",
-                fullDescription: "Join us for an inspiring day of leadership development, skill-building workshops, and networking with like-minded youth from across Nepal. This summit brings together young change-makers to share ideas, learn from experts, and develop the skills needed to lead positive change in their communities.",
-                date: "2024-03-15",
-                location: "Kathmandu Convention Center",
-                participants: 150,
-                image: "/images/aboutOurOrgImage.jpg",
-                category: "Leadership Development",
-                organizer: "Youth Initiative Nepal",
-                objectives: [
-                    "Develop leadership skills among young people",
-                    "Create networking opportunities for youth leaders",
-                    "Inspire action towards community development",
-                    "Share best practices in youth engagement"
-                ],
-                outcomes: [
-                    "150+ youth participated from 15 districts",
-                    "5 new youth-led initiatives launched",
-                    "Community action plans developed",
-                    "Strong network of young leaders established"
-                ]
-            },
-            {
-                id: 2,
-                title: "Digital Skills Training Workshop",
-                shortDescription: "Building digital literacy and technical skills for the modern workforce.",
-                fullDescription: "In today's digital age, having strong technical skills is essential. Our comprehensive digital skills workshop covers everything from basic computer literacy to advanced digital marketing techniques, preparing young people for the modern job market.",
-                date: "2024-02-28",
-                location: "Youth Initiative Training Center",
-                participants: 80,
-                image: "/images/aboutOurOrgImage1.jpg",
-                category: "Skills Development",
-                organizer: "Youth Initiative Nepal",
-                objectives: [
-                    "Improve digital literacy among youth",
-                    "Provide practical technical skills training",
-                    "Enhance employability of participants",
-                    "Bridge the digital divide"
-                ],
-                outcomes: [
-                    "80 youth gained digital certification",
-                    "60% of participants found employment",
-                    "New digital learning center established",
-                    "Follow-up support programs launched"
-                ]
-            }
-        ];
-
-        const activity = activities.find(a => a.id === parseInt(id));
-        if (activity) {
-            setSelectedActivity(activity);
-        }
-    }, [id]);
-
-    if (!selectedActivity) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Activity Not Found</h2>
-                    <p className="text-gray-600">The requested activity could not be found.</p>
-                </div>
-            </div>
-        );
-    }
+const ActivityDetail: React.FC<ActivityDetailProps> = ({ activity }) => {
 
     const handleShare = (platform: string) => {
         const url = encodeURIComponent(window.location.href);
-        const title = encodeURIComponent(selectedActivity.title);
+        const title = encodeURIComponent(activity.title);
         
         let shareUrl = '';
         
@@ -122,7 +49,7 @@ const ActivityDetail: React.FC<ActivityDetailProps> = ({ id }) => {
 
     return (
         <>
-            <Head title={`${selectedActivity.title} - Youth Initiative`} />
+            <Head title={`${activity.title} - Youth Initiative`} />
             <PublicHeader user={null} />
             
             <div className="pt-32 min-h-screen bg-gray-50">
@@ -142,14 +69,14 @@ const ActivityDetail: React.FC<ActivityDetailProps> = ({ id }) => {
                             {/* Hero Image */}
                             <div className="relative h-96 rounded-xl overflow-hidden">
                                 <img 
-                                    src={selectedActivity.image}
-                                    alt={selectedActivity.title}
+                                    src={activity.image}
+                                    alt={activity.title}
                                     className="w-full h-full object-cover"
                                 />
                                 <div className="absolute inset-0 bg-black/30" />
                                 <div className="absolute bottom-6 left-6 text-white">
                                     <span className="bg-blue-600 px-3 py-1 rounded-full text-sm">
-                                        {selectedActivity.category}
+                                        {activity.category}
                                     </span>
                                 </div>
                             </div>
@@ -157,54 +84,36 @@ const ActivityDetail: React.FC<ActivityDetailProps> = ({ id }) => {
                             {/* Content */}
                             <div className="bg-white rounded-xl p-8 shadow-sm">
                                 <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                                    {selectedActivity.title}
+                                    {activity.title}
                                 </h1>
                                 
                                 <div className="flex flex-wrap gap-6 mb-8 text-gray-600">
                                     <div className="flex items-center space-x-2">
                                         <Calendar className="h-5 w-5" />
-                                        <span>{new Date(selectedActivity.date).toLocaleDateString()}</span>
+                                        <span>{new Date(activity.date).toLocaleDateString()}</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <MapPin className="h-5 w-5" />
-                                        <span>{selectedActivity.location}</span>
+                                        <span>{activity.location}</span>
                                     </div>
-                                    <div className="flex items-center space-x-2">
-                                        <Users className="h-5 w-5" />
-                                        <span>{selectedActivity.participants} Participants</span>
-                                    </div>
+                                    {activity.participants && (
+                                        <div className="flex items-center space-x-2">
+                                            <Users className="h-5 w-5" />
+                                            <span>{activity.participants} Participants</span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="prose max-w-none">
-                                    <p className="text-lg text-gray-700 leading-relaxed mb-8">
-                                        {selectedActivity.fullDescription}
-                                    </p>
-
-                                    {/* Objectives */}
-                                    <div className="mb-8">
-                                        <h3 className="text-2xl font-bold text-gray-800 mb-4">Objectives</h3>
-                                        <ul className="space-y-2">
-                                            {selectedActivity.objectives.map((objective, index) => (
-                                                <li key={index} className="flex items-start space-x-3">
-                                                    <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
-                                                    <span className="text-gray-700">{objective}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                    <div className="text-lg text-gray-700 leading-relaxed mb-8">
+                                        <div dangerouslySetInnerHTML={{ __html: activity.description }} />
                                     </div>
 
-                                    {/* Outcomes */}
-                                    <div className="mb-8">
-                                        <h3 className="text-2xl font-bold text-gray-800 mb-4">Outcomes & Impact</h3>
-                                        <ul className="space-y-2">
-                                            {selectedActivity.outcomes.map((outcome, index) => (
-                                                <li key={index} className="flex items-start space-x-3">
-                                                    <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0" />
-                                                    <span className="text-gray-700">{outcome}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
+                                    {activity.content && (
+                                        <div className="text-gray-700 leading-relaxed">
+                                            <div dangerouslySetInnerHTML={{ __html: activity.content }} />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -217,21 +126,33 @@ const ActivityDetail: React.FC<ActivityDetailProps> = ({ id }) => {
                                 <div className="space-y-4">
                                     <div>
                                         <div className="text-sm text-gray-500">Organizer</div>
-                                        <div className="font-medium text-gray-800">{selectedActivity.organizer}</div>
+                                        <div className="font-medium text-gray-800">{activity.organizer}</div>
                                     </div>
                                     <div>
                                         <div className="text-sm text-gray-500">Category</div>
-                                        <div className="font-medium text-gray-800">{selectedActivity.category}</div>
+                                        <div className="font-medium text-gray-800">{activity.category}</div>
                                     </div>
                                     <div>
                                         <div className="text-sm text-gray-500">Date</div>
                                         <div className="font-medium text-gray-800">
-                                            {new Date(selectedActivity.date).toLocaleDateString()}
+                                            {new Date(activity.date).toLocaleDateString()}
                                         </div>
                                     </div>
                                     <div>
                                         <div className="text-sm text-gray-500">Location</div>
-                                        <div className="font-medium text-gray-800">{selectedActivity.location}</div>
+                                        <div className="font-medium text-gray-800">{activity.location}</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-sm text-gray-500">Status</div>
+                                        <div className="font-medium text-gray-800">
+                                            <span className={`inline-block px-3 py-1 rounded-full text-sm ${
+                                                activity.status === 'completed' ? 'bg-gray-100 text-gray-800' :
+                                                activity.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
+                                                'bg-green-100 text-green-800'
+                                            }`}>
+                                                {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -47,11 +47,19 @@ interface GalleryIndexProps extends PageProps {
 }
 
 export default function Index({ auth, galleryImages }: GalleryIndexProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
         return null;
     }
+
+    // Ensure data is an array with comprehensive null safety
+    const images = Array.isArray(galleryImages?.data) ? galleryImages.data : [];
+    const pagination = galleryImages?.links || [];
+    const hasPages = galleryImages && galleryImages.last_page > 1;
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this gallery image?')) {
@@ -102,7 +110,7 @@ export default function Index({ auth, galleryImages }: GalleryIndexProps) {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {galleryImages.data.map((image) => (
+                                {images.map((image) => (
                                     <tr key={image.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="h-16 w-16">
@@ -142,7 +150,7 @@ export default function Index({ auth, galleryImages }: GalleryIndexProps) {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {image.user.name}
+                                            {image.user?.name || 'Unknown'}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div className="flex space-x-2">
@@ -167,20 +175,20 @@ export default function Index({ auth, galleryImages }: GalleryIndexProps) {
                     </div>
 
                     {/* Pagination */}
-                    {galleryImages.last_page > 1 && (
+                    {hasPages && (
                         <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                             <div className="flex-1 flex justify-between sm:hidden">
-                                {galleryImages.links[0].url && (
+                                {pagination[0]?.url && (
                                     <Link
-                                        href={galleryImages.links[0].url}
+                                        href={pagination[0].url}
                                         className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                                     >
                                         Previous
                                     </Link>
                                 )}
-                                {galleryImages.links[galleryImages.links.length - 1].url && (
+                                {pagination[pagination.length - 1]?.url && (
                                     <Link
-                                        href={galleryImages.links[galleryImages.links.length - 1].url!}
+                                        href={pagination[pagination.length - 1].url!}
                                         className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                                     >
                                         Next
@@ -192,20 +200,20 @@ export default function Index({ auth, galleryImages }: GalleryIndexProps) {
                                     <p className="text-sm text-gray-700">
                                         Showing{' '}
                                         <span className="font-medium">
-                                            {((galleryImages.current_page - 1) * galleryImages.per_page) + 1}
+                                            {((galleryImages?.current_page || 1) - 1) * (galleryImages?.per_page || 10) + 1}
                                         </span>{' '}
                                         to{' '}
                                         <span className="font-medium">
-                                            {Math.min(galleryImages.current_page * galleryImages.per_page, galleryImages.total)}
+                                            {Math.min((galleryImages?.current_page || 1) * (galleryImages?.per_page || 10), galleryImages?.total || 0)}
                                         </span>{' '}
                                         of{' '}
-                                        <span className="font-medium">{galleryImages.total}</span>{' '}
+                                        <span className="font-medium">{galleryImages?.total || 0}</span>{' '}
                                         results
                                     </p>
                                 </div>
                                 <div>
                                     <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                        {galleryImages.links.map((link, index) => (
+                                        {pagination.map((link, index) => (
                                             <Link
                                                 key={index}
                                                 href={link.url || '#'}
@@ -224,7 +232,7 @@ export default function Index({ auth, galleryImages }: GalleryIndexProps) {
                     )}
                 </div>
 
-                {galleryImages.data.length === 0 && (
+                {images.length === 0 && (
                     <div className="text-center py-12">
                         <p className="text-gray-500 text-lg">No gallery images found.</p>
                         <Link

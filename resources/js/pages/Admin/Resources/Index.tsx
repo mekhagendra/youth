@@ -1,6 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { FileText, Download, Calendar, User, Eye, Edit, Trash2, Plus } from 'lucide-react';
+import { FileText, Download, Eye, Edit, Trash2, Plus } from 'lucide-react';
 import { PageProps } from '@/types';
 
 interface Resource {

@@ -24,12 +24,15 @@ export default function Create({ auth }: PageProps) {
         name: '',
         email: '',
         password: '',
-        role: 'user',
+        user_type: 'Guest',
     });
 
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
         return null;
     }
 
@@ -102,20 +105,24 @@ export default function Create({ auth }: PageProps) {
                             </div>
 
                             <div className="mb-4">
-                                <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                                    Role
+                                <label htmlFor="user_type" className="block text-sm font-medium text-gray-700">
+                                    User Type
                                 </label>
                                 <select
-                                    id="role"
-                                    value={data.role}
-                                    onChange={(e) => setData('role', e.target.value)}
+                                    id="user_type"
+                                    value={data.user_type}
+                                    onChange={(e) => setData('user_type', e.target.value)}
                                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 >
-                                    <option value="user">User</option>
-                                    <option value="member">Member</option>
-                                    <option value="admin">Admin</option>
+                                    <option value="Guest">Guest</option>
+                                    <option value="Member">Member</option>
+                                    <option value="Volunteer">Volunteer</option>
+                                    <option value="Intern">Intern</option>
+                                    <option value="Employee">Employee</option>
+                                    <option value="System Manager">System Manager</option>
+                                    <option value="System Admin">System Admin</option>
                                 </select>
-                                {errors.role && <div className="text-red-600 text-sm mt-1">{errors.role}</div>}
+                                {errors.user_type && <div className="text-red-600 text-sm mt-1">{errors.user_type}</div>}
                             </div>
 
                             <div className="flex items-center justify-end">

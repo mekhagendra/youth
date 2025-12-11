@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, Plus, X } from 'lucide-react';
-import { FormEvent, useState, useEffect } from 'react';
+import { FormEvent, useState } from 'react';
 
 interface Member {
     id: number;
@@ -82,7 +82,7 @@ export default function Edit({ team, members }: Props) {
             description: form.data.description,
             is_active: form.data.is_active,
             display_order: form.data.display_order,
-            members: selectedMembers as any,
+            members: selectedMembers,
         }, {
             preserveScroll: true,
             onSuccess: () => {

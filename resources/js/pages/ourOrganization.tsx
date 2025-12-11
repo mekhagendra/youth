@@ -10,17 +10,12 @@ const OurOrganization: React.FC = () => {
       <PublicHeader />
       <div className="w-full bg-white font-primary">
       {/* HERO SECTION */}
-      <div
-        className="w-full h-[20rem] sm:h-[35rem] bg-cover bg-center flex items-center justify-center relative"
-        style={{
-          backgroundImage: `url('/assets/images/ourorganization/banner.jpg')`,
-        }}
-      >
-        <div className="absolute inset-0 bg-black/50" />
-        <h1 className="relative text-white text-4xl sm:text-5xl font-heading font-bold tracking-wider text-center">
-          Our Organization
-        </h1>
+      <div className="bg-gradient-to-r from-green-700 to-green-300 text-white pt-4 pb-2">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-5xl font-bold mb-6">Our Organization</h1>
+        </div>
       </div>
+
 
       {/* MAIN CONTENT */}
       <div className="max-w-5xl mx-auto px-4 py-10 space-y-8">

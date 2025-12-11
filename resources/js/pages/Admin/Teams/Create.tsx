@@ -55,7 +55,7 @@ export default function Create({ members }: Props) {
             description: form.data.description,
             is_active: form.data.is_active,
             display_order: form.data.display_order,
-            members: selectedMembers as any,
+            members: selectedMembers,
         }, {
             preserveScroll: true,
             onSuccess: () => {

@@ -39,9 +39,12 @@ interface UsersProps extends PageProps {
 }
 
 export default function Index({ auth, users }: UsersProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
         return null;
     }
 
@@ -51,13 +54,18 @@ export default function Index({ auth, users }: UsersProps) {
         }
     };
 
-    const getRoleBadgeClass = (role: string) => {
-        switch (role) {
-            case 'admin':
+    const getUserTypeBadgeClass = (userType: string) => {
+        switch (userType) {
+            case 'System Admin':
+            case 'System Manager':
                 return 'bg-red-100 text-red-800';
-            case 'member':
+            case 'Employee':
+                return 'bg-purple-100 text-purple-800';
+            case 'Member':
+            case 'Volunteer':
+            case 'Intern':
                 return 'bg-blue-100 text-blue-800';
-            case 'user':
+            case 'Guest':
                 return 'bg-green-100 text-green-800';
             default:
                 return 'bg-gray-100 text-gray-800';
@@ -92,7 +100,7 @@ export default function Index({ auth, users }: UsersProps) {
                                             Email
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Role
+                                            User Type
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Created
@@ -112,8 +120,8 @@ export default function Index({ auth, users }: UsersProps) {
                                                 <div className="text-sm text-gray-900">{user.email}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRoleBadgeClass(user.role)}`}>
-                                                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                                                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getUserTypeBadgeClass(user.user_type)}`}>
+                                                    {user.user_type}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

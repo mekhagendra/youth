@@ -65,7 +65,11 @@ export default function Resources() {
             <PublicHeader />
 
             <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-
+                <div className="bg-gradient-to-r from-green-700 to-green-300 text-white pt-4 pb-2">
+                    <div className="container mx-auto px-4 text-center">
+                        <h1 className="text-5xl font-bold mb-6">Resources</h1>
+                    </div>
+                </div>
                 {/* Search and Filter */}
                 <div className="container mx-auto px-4 py-8">
                     <div className="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -87,7 +91,7 @@ export default function Resources() {
                                 <select
                                     value={selectedCategory}
                                     onChange={(e) => setSelectedCategory(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 >
                                     <option value="all">All Categories</option>
                                     {categories.map((category) => (

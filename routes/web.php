@@ -22,8 +22,21 @@ Route::get('/activities', function () {
 })->name('activities');
 
 Route::get('/activities/{id}', function ($id) {
+    $activity = \App\Models\Activity::findOrFail($id);
     return Inertia::render('activity-detail', [
-        'activityId' => $id
+        'activity' => [
+            'id' => $activity->id,
+            'title' => $activity->title,
+            'description' => $activity->description,
+            'content' => $activity->content,
+            'date' => $activity->date->format('Y-m-d'),
+            'location' => $activity->location,
+            'participants' => $activity->participants,
+            'image' => $activity->image_path ? asset('storage/' . $activity->image_path) : asset('images/aboutOurOrgImage.jpg'),
+            'category' => ucfirst($activity->category),
+            'organizer' => $activity->organizer,
+            'status' => $activity->status,
+        ]
     ]);
 })->name('activity-detail');
 
@@ -37,18 +50,27 @@ Route::get('/gallery', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         // Redirect admin users to admin dashboard
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Auth::check() && Auth::user()->isAdmin()) {
             return redirect()->route('admin.dashboard');
         }
         
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    // Voice of Changes - Now all authenticated users can submit
+    Route::resource('voice-of-changes', \App\Http\Controllers\VoiceOfChangeController::class);
+
+    // User Applications - Guest users can apply for membership
+    Route::resource('applications', \App\Http\Controllers\UserApplicationController::class)
+        ->only(['index', 'create', 'store', 'show', 'destroy']);
 });
 
 // Admin Routes
-Route::get('/opportunities/volunteer', function () {
-    return Inertia::render('opportunities/volunteer');
-})->name('volunteer-opportunities');
+Route::get('/opportunities/volunteer', [\App\Http\Controllers\VolunteerApplicationController::class, 'create'])->name('volunteer-opportunities');
+Route::post('/opportunities/volunteer', [\App\Http\Controllers\VolunteerApplicationController::class, 'store'])->name('volunteer-applications.store');
+
+Route::get('/opportunities/internship', [\App\Http\Controllers\InternshipApplicationController::class, 'create'])->name('internship-opportunities');
+Route::post('/opportunities/internship', [\App\Http\Controllers\InternshipApplicationController::class, 'store'])->name('internship-applications.store');
 
 Route::get('/members/signup', function () {
     return Inertia::render('members/signup');
@@ -62,6 +84,20 @@ Route::get('/resources', function () {
 })->name('resources');
 
 Route::get('/resources/{resource}/download', [\App\Http\Controllers\Admin\ResourceController::class, 'download'])->name('resources.download');
+
+Route::get('/working-areas/{slug}', function ($slug) {
+    $workingArea = \App\Models\WorkingArea::where('slug', $slug)->where('is_active', true)->firstOrFail();
+    $allWorkingAreas = \App\Models\WorkingArea::active()->ordered()->get(['id', 'title', 'slug']);
+    
+    return Inertia::render('workingAreas', [
+        'workingArea' => [
+            'title' => $workingArea->title,
+            'description' => $workingArea->description,
+            'image_url' => $workingArea->image_url,
+        ],
+        'allWorkingAreas' => $allWorkingAreas,
+    ]);
+})->name('working-areas.show');
 
 Route::get('/contact', function () {
     return Inertia::render('contact');
@@ -111,6 +147,9 @@ Route::get('/ourTeam', function () {
 // API Routes
 Route::prefix('api')->group(function () {
     Route::get('/supporters', [\App\Http\Controllers\Api\SupporterController::class, 'index']);
+    Route::get('/working-areas', function () {
+        return \App\Models\WorkingArea::active()->ordered()->get(['id', 'title', 'slug']);
+    });
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -138,6 +177,36 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     
     // Resource Management
     Route::resource('resources', \App\Http\Controllers\Admin\ResourceController::class);
+    
+    // Working Areas Management
+    Route::resource('working-areas', \App\Http\Controllers\Admin\WorkingAreaController::class);
+    
+    // Volunteer Applications Management
+    Route::get('/volunteer-applications', [\App\Http\Controllers\Admin\VolunteerApplicationAdminController::class, 'index'])->name('volunteer-applications.index');
+    Route::get('/volunteer-applications/{application}', [\App\Http\Controllers\Admin\VolunteerApplicationAdminController::class, 'show'])->name('volunteer-applications.show');
+    Route::patch('/volunteer-applications/{application}/status', [\App\Http\Controllers\Admin\VolunteerApplicationAdminController::class, 'updateStatus'])->name('volunteer-applications.update-status');
+    Route::delete('/volunteer-applications/{application}', [\App\Http\Controllers\Admin\VolunteerApplicationAdminController::class, 'destroy'])->name('volunteer-applications.destroy');
+    
+    // Internship Applications Management
+    Route::get('/internship-applications', [\App\Http\Controllers\Admin\InternshipApplicationAdminController::class, 'index'])->name('internship-applications.index');
+    Route::get('/internship-applications/{application}', [\App\Http\Controllers\Admin\InternshipApplicationAdminController::class, 'show'])->name('internship-applications.show');
+    Route::patch('/internship-applications/{application}/status', [\App\Http\Controllers\Admin\InternshipApplicationAdminController::class, 'updateStatus'])->name('internship-applications.update-status');
+    Route::delete('/internship-applications/{application}', [\App\Http\Controllers\Admin\InternshipApplicationAdminController::class, 'destroy'])->name('internship-applications.destroy');
+    
+    // Voice of Changes - Admin routes
+    Route::get('/voice-of-changes', [\App\Http\Controllers\Admin\VoiceOfChangeAdminController::class, 'index'])->name('voice-of-changes.index');
+    Route::get('/voice-of-changes/{voiceOfChange}', [\App\Http\Controllers\Admin\VoiceOfChangeAdminController::class, 'show'])->name('voice-of-changes.show');
+    Route::post('/voice-of-changes/{voiceOfChange}/approve', [\App\Http\Controllers\Admin\VoiceOfChangeAdminController::class, 'approve'])->name('voice-of-changes.approve');
+    Route::post('/voice-of-changes/{voiceOfChange}/reject', [\App\Http\Controllers\Admin\VoiceOfChangeAdminController::class, 'reject'])->name('voice-of-changes.reject');
+    Route::post('/voice-of-changes/{voiceOfChange}/unpublish', [\App\Http\Controllers\Admin\VoiceOfChangeAdminController::class, 'unpublish'])->name('voice-of-changes.unpublish');
+    Route::delete('/voice-of-changes/{voiceOfChange}', [\App\Http\Controllers\Admin\VoiceOfChangeAdminController::class, 'destroy'])->name('voice-of-changes.destroy');
+    
+    // User Applications Management
+    Route::get('/applications', [\App\Http\Controllers\Admin\UserApplicationAdminController::class, 'index'])->name('applications.index');
+    Route::get('/applications/{application}', [\App\Http\Controllers\Admin\UserApplicationAdminController::class, 'show'])->name('applications.show');
+    Route::post('/applications/{application}/approve', [\App\Http\Controllers\Admin\UserApplicationAdminController::class, 'approve'])->name('applications.approve');
+    Route::post('/applications/{application}/reject', [\App\Http\Controllers\Admin\UserApplicationAdminController::class, 'reject'])->name('applications.reject');
+    Route::delete('/applications/{application}', [\App\Http\Controllers\Admin\UserApplicationAdminController::class, 'destroy'])->name('applications.destroy');
 });
 
 require __DIR__.'/settings.php';

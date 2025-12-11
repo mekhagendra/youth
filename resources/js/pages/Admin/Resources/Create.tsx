@@ -2,9 +2,8 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { ArrowLeft } from 'lucide-react';
 import { FormEvent } from 'react';
-import { PageProps } from '@/types';
 
-export default function Create({ }: PageProps) {
+export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         description: '',

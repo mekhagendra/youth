@@ -39,7 +39,7 @@ export default function Signup() {
             || document.cookie.split('; ').find(row => row.startsWith('XSRF-TOKEN='))?.split('=')[1];
 
         try {
-            const response = await axios.post('/api/members/signup', data, {
+            await axios.post('/api/members/signup', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'X-CSRF-TOKEN': csrfToken || '',
@@ -55,9 +55,14 @@ export default function Signup() {
                 description: '',
             });
             setPhoto(null);
-        } catch (error: any) {
-            if (error.response?.data?.errors) {
-                setErrors(error.response.data.errors);
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'response' in error) {
+                const axiosError = error as { response?: { data?: { errors?: Record<string, string> } } };
+                if (axiosError.response?.data?.errors) {
+                    setErrors(axiosError.response.data.errors);
+                } else {
+                    setErrors({ general: 'An error occurred. Please try again.' });
+                }
             } else {
                 setErrors({ general: 'An error occurred. Please try again.' });
             }
@@ -209,14 +214,6 @@ export default function Signup() {
                                     dark:file:bg-gray-700 dark:file:text-gray-300"
                             />
                             {errors.photo && <p className="mt-1 text-sm text-red-600">{errors.photo}</p>}
-                        </div>
-
-                        {/* Privacy Notice */}
-                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                            <p className="text-sm text-blue-800 dark:text-blue-200">
-                                <strong>Privacy Notice:</strong> Your phone number and email will be visible to the public by default. 
-                                You can change these privacy settings after your membership is activated.
-                            </p>
                         </div>
 
                         {/* Submit Button */}

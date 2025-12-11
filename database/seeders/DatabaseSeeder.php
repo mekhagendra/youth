@@ -34,15 +34,27 @@ class DatabaseSeeder extends Seeder
             DB::statement('PRAGMA foreign_keys = ON;');
         }
 
-        // Create admin user
+        // Create default System Admin user
         User::firstOrCreate(
-            ['email' => 'admin@youth.org'],
+            ['email' => 'admin@youth.org.np'],
             [
                 'name' => 'Youth Initiative Admin',
                 'password' => 'admin123',
                 'email_verified_at' => now(),
-                'role' => 'admin',
+                'user_type' => 'System Admin',
+                'status' => 'Active',
+                'is_active' => true,
             ]
         );
+        
+        // Update existing admin@youth.org if it exists
+        $oldAdmin = User::where('email', 'admin@youth.org')->first();
+        if ($oldAdmin) {
+            $oldAdmin->update([
+                'user_type' => 'System Admin',
+                'status' => 'Active',
+                'is_active' => true,
+            ]);
+        }
     }
 }

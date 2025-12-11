@@ -55,7 +55,19 @@ interface Props extends PageProps {
     flash?: FlashMessages;
 }
 
-const Index: React.FC<Props> = ({ supporters, flash }) => {
+const Index: React.FC<Props> = ({ auth, supporters, flash }) => {
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
+
+    // Ensure data is an array
+    const supportersList = supporters?.data || [];
+
     const handleDelete = (supporter: Supporter) => {
         if (confirm(`Are you sure you want to delete ${supporter.name}?`)) {
             router.delete(`/admin/supporters/${supporter.id}`);
@@ -120,15 +132,18 @@ const Index: React.FC<Props> = ({ supporters, flash }) => {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {supporters.data.map((supporter) => (
+                                {supportersList.map((supporter) => (
                                     <tr key={supporter.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">
                                                 {supporter.logo_path ? (
                                                     <img
                                                         src={`/storage/${supporter.logo_path}`}
-                                                        alt={supporter.name}
+                                                        alt={supporter.name || 'Supporter'}
                                                         className="w-10 h-10 object-contain"
+                                                        onError={(e) => {
+                                                            e.currentTarget.style.display = 'none';
+                                                        }}
                                                     />
                                                 ) : (
                                                     <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
@@ -139,7 +154,7 @@ const Index: React.FC<Props> = ({ supporters, flash }) => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm font-medium text-gray-900">
-                                                {supporter.name}
+                                                {supporter.name || 'N/A'}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -159,7 +174,7 @@ const Index: React.FC<Props> = ({ supporters, flash }) => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className="text-sm text-gray-900">
-                                                {supporter.display_order}
+                                                {supporter.display_order ?? 0}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -203,7 +218,7 @@ const Index: React.FC<Props> = ({ supporters, flash }) => {
                         </table>
                     </div>
 
-                    {supporters.data.length === 0 && (
+                    {supportersList.length === 0 && (
                         <div className="text-center py-12">
                             <p className="text-gray-500">No supporters found</p>
                             <Link
@@ -217,10 +232,10 @@ const Index: React.FC<Props> = ({ supporters, flash }) => {
                 </div>
 
                 {/* Pagination */}
-                {supporters.meta.last_page > 1 && (
+                {supporters?.meta?.last_page > 1 && (
                     <div className="flex justify-center">
                         <nav className="flex items-center space-x-2">
-                            {supporters.links.map((link, index) => (
+                            {supporters.links?.map((link, index) => (
                                 <Link
                                     key={index}
                                     href={link.url || '#'}

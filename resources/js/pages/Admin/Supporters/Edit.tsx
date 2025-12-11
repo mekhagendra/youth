@@ -35,7 +35,16 @@ interface Props extends PageProps {
     supporter: Supporter;
 }
 
-const Edit: React.FC<Props> = ({ supporter }) => {
+const Edit: React.FC<Props> = ({ auth, supporter }) => {
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
+
     const [previewUrl, setPreviewUrl] = useState<string | null>(
         supporter.logo_path ? `/storage/${supporter.logo_path}` : null
     );

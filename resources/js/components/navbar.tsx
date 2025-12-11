@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -7,6 +7,12 @@ import {
     ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+interface WorkingArea {
+    id: number;
+    title: string;
+    slug: string;
+}
 
 interface NavbarProps {
     user?: {
@@ -17,63 +23,62 @@ interface NavbarProps {
     } | null;
 }
 
-const navigationItems = [
-    {
-        title: 'HOME',
-        href: '/'
-    },
-    {
-        title: 'ABOUT',
-        href: '/about',
-        subItems: [
-            { title: 'About Our Organization', href: '/ourOrganization' },
-            { title: 'Our Team', href: '/ourTeam' },
-        ]
-    },
-    {
-        title: 'ACTIVITIES',
-        href: '/activities',
-        subItems: [
-            { title: 'Upcoming Programs', href: '/activities/upcoming' },
-            { title: 'Recent Programs', href: '/activities/recent' },
-            { title: 'Ongoing Projects', href: '/activities/ongoing' },
-            { title: 'Success Stories', href: '/activities/success' },
-        ]
-    },
-    {
-        title: 'WORKING AREAS',
-        href: '/working-areas',
-        subItems: [
-            { title: 'YOUTH IN CIVIC LEADERSHIP, HUMAN RIGHTS AND DEMOCRATIZATION', href: '/working-areas/leadership' },
-            { title: 'YOUTH IN GOVERNANCE', href: '/working-areas/governance' },
-            { title: 'YOUTH IN PEACE BUILDING', href: '/working-areas/peace' },
-            { title: 'YOUTH IN ENTREPRENEURSHIP', href: '/working-areas/entrepreneurship' },
-            { title: 'YOUTH IN COMMON PLATFORM', href: '/working-areas/common-platform' },
-        ]
-    },
-    {
-        title: 'OPPORTUNITIES',
-        href: '/opportunities',
-        subItems: [
-            { title: 'Volunteer', href: '/opportunities/volunteer' },
-            { title: 'Internship', href: '/opportunities/internship' },
-            { title: 'Careers', href: '/opportunities/careers' },
-            { title: 'YI Awards Application', href: '/opportunities/yiawards' },
-        ]
-    },
-    {
-        title: 'RESOURCES',
-        href: '/resources',
-    },
-    {
-        title: 'CONTACT',
-        href: '/contact',
-    }
-];
-
 const Navbar: React.FC<NavbarProps> = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const [workingAreas, setWorkingAreas] = useState<WorkingArea[]>([]);
+
+    useEffect(() => {
+        // Fetch working areas from API
+        fetch('/api/working-areas')
+            .then(response => response.json())
+            .then(data => setWorkingAreas(data))
+            .catch(error => console.error('Error fetching working areas:', error));
+    }, []);
+
+    const navigationItems = [
+        {
+            title: 'HOME',
+            href: '/'
+        },
+        {
+            title: 'ABOUT',
+            href: '/about',
+            subItems: [
+                { title: 'Organization', href: '/ourOrganization' },
+                { title: 'Team', href: '/ourTeam' },
+            ]
+        },
+        {
+            title: 'ACTIVITIES',
+            href: '/activities',
+        },
+        {
+            title: 'WORKING AREAS',
+            href: '/working-areas',
+            subItems: workingAreas.map(area => ({
+                title: area.title,
+                href: `/working-areas/${area.slug}`
+            }))
+        },
+        {
+            title: 'OPPORTUNITIES',
+            href: '/opportunities',
+            subItems: [
+                { title: 'Volunteer', href: '/opportunities/volunteer' },
+                { title: 'Internship', href: '/opportunities/internship' },
+                { title: 'YI Awards Application', href: '/opportunities/yiawards' },
+            ]
+        },
+        {
+            title: 'RESOURCES',
+            href: '/resources',
+        },
+        {
+            title: 'CONTACT',
+            href: '/contact',
+        }
+    ];
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);

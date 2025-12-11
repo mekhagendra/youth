@@ -12,6 +12,10 @@ class ResourceController extends Controller
 {
     public function index()
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->isAdmin()) {
+            abort(403, 'Unauthorized access.');
+        }
+
         $resources = Resource::ordered()->get()->map(function ($resource) {
             return [
                 'id' => $resource->id,
@@ -35,6 +39,10 @@ class ResourceController extends Controller
 
     public function create()
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->isAdmin()) {
+            abort(403, 'Unauthorized access.');
+        }
+
         return Inertia::render('Admin/Resources/Create');
     }
 
@@ -100,6 +108,10 @@ class ResourceController extends Controller
 
     public function edit(Resource $resource)
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->isAdmin()) {
+            abort(403, 'Unauthorized access.');
+        }
+
         return Inertia::render('Admin/Resources/Edit', [
             'resource' => [
                 'id' => $resource->id,
@@ -170,7 +182,11 @@ class ResourceController extends Controller
 
     public function destroy(Resource $resource)
     {
-        // Delete file from storage
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->isAdmin()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        // Delete the file from storage
         if ($resource->file_path) {
             Storage::disk('public')->delete($resource->file_path);
         }

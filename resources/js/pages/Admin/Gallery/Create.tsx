@@ -44,9 +44,12 @@ export default function Create({ auth }: PageProps) {
         category: '',
     });
 
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
         return null;
     }
 

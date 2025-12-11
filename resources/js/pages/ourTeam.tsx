@@ -35,13 +35,9 @@ export default function OurTeam({ teams }: Props) {
 
             <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
                 {/* Hero Section */}
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
+                <div className="bg-gradient-to-r from-green-700 to-green-300 text-white pt-4 pb-2">
                     <div className="container mx-auto px-4 text-center">
-                        <Award className="h-16 w-16 mx-auto mb-6" />
                         <h1 className="text-5xl font-bold mb-6">Our Team</h1>
-                        <p className="text-xl max-w-3xl mx-auto">
-                            Meet the dedicated individuals driving our mission forward. Together, we're making a difference in communities across Nepal.
-                        </p>
                     </div>
                 </div>
 

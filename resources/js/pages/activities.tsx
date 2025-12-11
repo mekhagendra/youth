@@ -91,13 +91,13 @@ export default function Activities() {
 
             <div className="min-h-screen bg-gray-50">
                 {/* Hero Section */}
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-10">
+                <div className="bg-gradient-to-r from-green-700 to-green-300 text-white pt-4 pb-2">
                     <div className="container mx-auto px-4 text-center">
                         <h1 className="text-5xl font-bold mb-6">Activities</h1>
                     </div>
                 </div>
 
-                <div className="container mx-auto px-4 py-12">
+                <div className="container mx-auto px-4 py-5">
                     {/* Search and Filter Section */}
                     <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -225,7 +225,7 @@ export default function Activities() {
 
                     {/* No Results */}
                     {filteredActivities.length === 0 && (
-                        <div className="text-center py-16">
+                        <div className="text-center py-5">
                             <div className="text-gray-400 mb-4">
                                 <Search className="h-16 w-16 mx-auto" />
                             </div>

@@ -81,7 +81,7 @@ const Footer = () => {
                                 </li>
                                 <li>
                                     <Link 
-                                        href="/about" 
+                                        href="/ourOrganization" 
                                         className="text-black font-bold hover:text-green-400 transition-colors duration-200 flex items-center"
                                     >
                                         About Us
@@ -198,7 +198,7 @@ const Footer = () => {
                         <div className="flex items-center space-x-2 text-gray-400 text-sm">
                             <span>Made with</span>
                             <Heart className="h-4 w-4 text-red-500" />
-                            <span>for Nepal's Youth</span>
+                            <span>by Smart Innovation</span>
                         </div>
                     </div>
                 </div>

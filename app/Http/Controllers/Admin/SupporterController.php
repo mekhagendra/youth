@@ -27,6 +27,7 @@ class SupporterController extends Controller
      */
     public function create()
     {
+
         return Inertia::render('Admin/Supporters/Create');
     }
 
@@ -35,6 +36,7 @@ class SupporterController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -66,6 +68,7 @@ class SupporterController extends Controller
      */
     public function edit(Supporter $supporter)
     {
+
         return Inertia::render('Admin/Supporters/Edit', [
             'supporter' => $supporter
         ]);
@@ -76,6 +79,7 @@ class SupporterController extends Controller
      */
     public function update(Request $request, Supporter $supporter)
     {
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -111,6 +115,7 @@ class SupporterController extends Controller
      */
     public function destroy(Supporter $supporter)
     {
+
         // Delete logo file
         if ($supporter->logo_path && Storage::disk('public')->exists($supporter->logo_path)) {
             Storage::disk('public')->delete($supporter->logo_path);

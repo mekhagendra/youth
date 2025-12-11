@@ -42,7 +42,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="email@example.com"
+                                    placeholder="Please enter your email"
                                 />
                                 <InputError message={errors.email} />
                             </div>
@@ -67,7 +67,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     required
                                     tabIndex={2}
                                     autoComplete="current-password"
-                                    placeholder="Password"
+                                    placeholder="Please enter your password"
                                 />
                                 <InputError message={errors.password} />
                             </div>

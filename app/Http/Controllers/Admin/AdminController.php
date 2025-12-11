@@ -13,8 +13,8 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Double check authentication and admin role (defense in depth)
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        // Double check authentication and admin privileges (defense in depth)
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -23,7 +23,7 @@ class AdminController extends Controller
             'totalGalleryImages' => GalleryImage::count(),
             'totalActivities' => Activity::count(),
             'upcomingActivities' => Activity::upcoming()->count(),
-            'recentUsers' => User::latest()->take(5)->get(['id', 'name', 'email', 'created_at'])
+            'recentUsers' => User::latest()->take(5)->get(['id', 'name', 'email', 'user_type', 'created_at'])
         ];
 
         return Inertia::render('Admin/Dashboard', [

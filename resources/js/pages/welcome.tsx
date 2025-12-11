@@ -225,7 +225,7 @@ export default function Welcome() {
                         {/* Small Screen Image (Mobile/Tablet) */}
                         <div className="block md:hidden">
                             <img 
-                                src="/images/aboutusImage.jpg" 
+                                src="/images/youthJourney.jpg" 
                                 alt="Youth Initiative Mobile Journey" 
                                 className="w-full h-auto"
                             />
@@ -234,7 +234,7 @@ export default function Welcome() {
                         {/* Medium+ Screen Image (Desktop) */}
                         <div className="hidden md:block">
                             <img 
-                                src="/images/backgroundImage.jpg" 
+                                src="/images/youthJourney.jpg" 
                                 alt="Youth Initiative Desktop Journey" 
                                 className="w-full h-auto"
                             />
@@ -251,7 +251,7 @@ export default function Welcome() {
                 <Supporter />
 
                 {/* CTA Section */}
-                <section className="bg-gray-50 py-20">
+                <section className="bg-gray-50">
                     <div className="container mx-auto px-4 text-center">
                         <h2 className="text-4xl font-bold text-green-700 mb-6">
                             Make a Difference, Support Those in Need.

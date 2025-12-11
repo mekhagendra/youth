@@ -31,6 +31,7 @@ class GalleryImageController extends Controller
      */
     public function create()
     {
+
         return Inertia::render('Admin/Gallery/Create');
     }
 
@@ -39,6 +40,7 @@ class GalleryImageController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -91,6 +93,7 @@ class GalleryImageController extends Controller
      */
     public function update(Request $request, GalleryImage $galleryImage)
     {
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -126,6 +129,7 @@ class GalleryImageController extends Controller
      */
     public function destroy(GalleryImage $galleryImage)
     {
+
         // Delete image file
         if ($galleryImage->image_path) {
             Storage::disk('public')->delete($galleryImage->image_path);

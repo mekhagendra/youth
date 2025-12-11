@@ -66,7 +66,7 @@ class TeamController extends Controller
         // Debug logging
         \Log::info('Team store request received', [
             'user' => auth()->user()?->email,
-            'is_admin' => auth()->user()?->role === 'admin',
+            'is_admin' => auth()->user()?->isAdmin(),
             'request_data' => $request->all(),
         ]);
         

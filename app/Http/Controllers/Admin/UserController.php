@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         // Additional security check
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
             abort(403, 'Unauthorized access.');
         }
         
@@ -42,14 +42,14 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:admin,member,user',
+            'user_type' => 'required|in:Guest,Member,Volunteer,Intern,Employee,System Admin,System Manager',
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'user_type' => $request->user_type,
             'email_verified_at' => now(),
         ]);
 
@@ -75,14 +75,14 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|in:admin,member,user',
+            'user_type' => 'required|in:Guest,Member,Volunteer,Intern,Employee,System Admin,System Manager',
             'password' => 'nullable|string|min:8',
         ]);
 
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'user_type' => $request->user_type,
         ];
 
         if ($request->filled('password')) {

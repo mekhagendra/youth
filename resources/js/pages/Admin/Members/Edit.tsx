@@ -24,9 +24,27 @@ interface EditProps extends PageProps {
 }
 
 export default function Edit({ auth, member }: EditProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
+    const [formData, setFormData] = useState({
+        name: member.name || '',
+        email: member.email || '',
+        phone: member.phone || '',
+        address: member.address || '',
+        description: member.description || '',
+        is_active: member.is_active,
+        is_lifetime_member: member.is_lifetime_member,
+        show_phone: member.show_phone,
+        show_email: member.show_email,
+    });
+
+    const [photo, setPhoto] = useState<File | null>(null);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
         return null;
     }
 
@@ -44,21 +62,6 @@ export default function Edit({ auth, member }: EditProps) {
             href: `/admin/members/${member.id}/edit`,
         },
     ];
-
-    const [formData, setFormData] = useState({
-        name: member.name || '',
-        email: member.email || '',
-        phone: member.phone || '',
-        address: member.address || '',
-        description: member.description || '',
-        is_active: member.is_active,
-        is_lifetime_member: member.is_lifetime_member,
-        show_phone: member.show_phone,
-        show_email: member.show_email,
-    });
-
-    const [photo, setPhoto] = useState<File | null>(null);
-    const [errors, setErrors] = useState<Record<string, string>>({});
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();

@@ -19,13 +19,13 @@ class AdminMiddleware
             return redirect()->route('login')->with('error', 'Please login to access admin area.');
         }
 
-        // Check if user has admin role
+        // Check if user has admin privileges (System Admin or System Manager)
         $user = Auth::user();
-        if (!$user || $user->role !== 'admin') {
+        if (!$user || !$user->isAdmin()) {
             // Log unauthorized access attempt
             logger('Unauthorized admin access attempt', [
                 'user_email' => $user ? $user->email : 'unknown',
-                'user_role' => $user ? $user->role : 'none',
+                'user_type' => $user ? $user->user_type : 'none',
                 'url' => $request->url(),
             ]);
             

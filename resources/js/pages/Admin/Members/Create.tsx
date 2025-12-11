@@ -19,12 +19,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Create({ auth }: PageProps) {
-    // Client-side security check
-    if (!auth.user || auth.user.role !== 'admin') {
-        window.location.href = '/login';
-        return null;
-    }
-
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -39,6 +33,15 @@ export default function Create({ auth }: PageProps) {
 
     const [photo, setPhoto] = useState<File | null>(null);
     const [errors, setErrors] = useState<Record<string, string>>({});
+
+    const isAdmin = auth.user && (
+        auth.user.user_type === 'System Admin' || 
+        auth.user.user_type === 'System Manager'
+    );
+
+    if (!isAdmin) {
+        return null;
+    }
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
