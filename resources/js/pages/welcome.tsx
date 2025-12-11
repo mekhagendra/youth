@@ -129,18 +129,6 @@ export default function Welcome() {
                                     macro level both in the present and the future.
                                 </p>
                             </div>
-                            
-                            {/* Stats */}
-                            <div className="flex flex-wrap gap-8">
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-blue-600">$1,284,528</div>
-                                    <div className="text-sm text-gray-600">Total Donations</div>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-green-600">12,460</div>
-                                    <div className="text-sm text-gray-600">Youth Placed in STEM</div>
-                                </div>
-                            </div>
                         </div>
                         
                         {/* Hero Image Carousel */}

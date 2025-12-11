@@ -185,8 +185,7 @@ export default function Show({ application }: Props) {
                                     <select
                                         id="status"
                                         value={data.status}
-                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                        onChange={(e) => setData('status', e.target.value as any)}
+                                        onChange={(e) => setData('status', e.target.value as 'pending' | 'approved' | 'rejected')}
                                         className="mt-1 w-full border rounded-md px-3 py-2"
                                     >
                                         <option value="pending">Pending</option>
